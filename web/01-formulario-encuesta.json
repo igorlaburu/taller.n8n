@@ -1,0 +1,202 @@
+{
+  "name": "01 - Formulario de Encuesta (Taller)",
+  "nodes": [
+    {
+      "parameters": {
+        "formTitle": "Encuesta del Taller de IA y n8n",
+        "formDescription": "Tarda menos de 2 minutos. Tus respuestas se usaran en vivo durante el taller.",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "Tu nombre",
+              "fieldType": "text",
+              "requiredField": true,
+              "placeholder": "Como te llamas?"
+            },
+            {
+              "fieldLabel": "Sector / Tipo de organizacion",
+              "fieldType": "dropdown",
+              "requiredField": true,
+              "fieldOptions": {
+                "values": [
+                  { "option": "Administracion publica" },
+                  { "option": "Empresa privada" },
+                  { "option": "ONG / Tercer sector" },
+                  { "option": "Educacion" },
+                  { "option": "Sanidad" },
+                  { "option": "Autonomo / Freelance" },
+                  { "option": "Otro" }
+                ]
+              }
+            },
+            {
+              "fieldLabel": "Tu rol en la organizacion",
+              "fieldType": "dropdown",
+              "requiredField": true,
+              "fieldOptions": {
+                "values": [
+                  { "option": "Direccion / Gerencia" },
+                  { "option": "Tecnico / IT / Programador" },
+                  { "option": "Marketing / Comunicacion" },
+                  { "option": "Operaciones / Administracion" },
+                  { "option": "RRHH" },
+                  { "option": "Otro" }
+                ]
+              }
+            },
+            {
+              "fieldLabel": "Cual es tu experiencia actual con IA?",
+              "fieldType": "dropdown",
+              "requiredField": true,
+              "fieldOptions": {
+                "values": [
+                  { "option": "Ninguna, soy nuevo en esto" },
+                  { "option": "He probado ChatGPT o similares" },
+                  { "option": "Lo uso habitualmente en mi trabajo" },
+                  { "option": "Tengo experiencia tecnica / desarrollo" }
+                ]
+              }
+            },
+            {
+              "fieldLabel": "Que proceso de tu organizacion te gustaria automatizar?",
+              "fieldType": "textarea",
+              "requiredField": false,
+              "placeholder": "Ej: clasificar emails de soporte, generar informes mensuales..."
+            }
+          ]
+        },
+        "options": {
+          "respondWithOptions": {
+            "values": {
+              "respondWith": "text",
+              "responseText": "Gracias por participar! Tus respuestas se han registrado. El ponente las usara en vivo durante el taller."
+            }
+          }
+        }
+      },
+      "id": "c3d4e5f6-0003-0001-0001-000000000001",
+      "name": "Formulario Encuesta",
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.2,
+      "position": [240, 300],
+      "webhookId": "encuesta-taller-001"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "f001",
+              "name": "nombre",
+              "value": "={{ $json['Tu nombre'] }}",
+              "type": "string"
+            },
+            {
+              "id": "f002",
+              "name": "sector",
+              "value": "={{ $json['Sector / Tipo de organizacion'] }}",
+              "type": "string"
+            },
+            {
+              "id": "f003",
+              "name": "rol",
+              "value": "={{ $json['Tu rol en la organizacion'] }}",
+              "type": "string"
+            },
+            {
+              "id": "f004",
+              "name": "experiencia_ia",
+              "value": "={{ $json['Cual es tu experiencia actual con IA?'] }}",
+              "type": "string"
+            },
+            {
+              "id": "f005",
+              "name": "proceso_a_automatizar",
+              "value": "={{ $json['Que proceso de tu organizacion te gustaria automatizar?'] || 'No especificado' }}",
+              "type": "string"
+            },
+            {
+              "id": "f006",
+              "name": "timestamp",
+              "value": "={{ $now.toISO() }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {
+          "includeOtherFields": false
+        }
+      },
+      "id": "c3d4e5f6-0003-0001-0001-000000000002",
+      "name": "Limpiar Campos",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [460, 300]
+    },
+    {
+      "parameters": {
+        "resource": "tableRecord",
+        "operation": "create",
+        "tableId": {
+          "__rl": true,
+          "value": "respuestas_taller",
+          "mode": "name"
+        },
+        "columns": {
+          "mappingMode": "autoMapInputData",
+          "value": {},
+          "matchingColumns": [],
+          "schema": []
+        },
+        "options": {}
+      },
+      "id": "c3d4e5f6-0003-0001-0001-000000000003",
+      "name": "Guardar en Tabla n8n",
+      "type": "n8n-nodes-base.n8n",
+      "typeVersion": 1,
+      "position": [680, 300],
+      "credentials": {
+        "n8nApi": {
+          "id": "CREDENCIAL_N8N_API",
+          "name": "n8n API local"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Formulario Encuesta": {
+      "main": [
+        [
+          {
+            "node": "Limpiar Campos",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Limpiar Campos": {
+      "main": [
+        [
+          {
+            "node": "Guardar en Tabla n8n",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "encuesta-v1",
+  "meta": {
+    "templateId": "taller-n8n-encuesta",
+    "instanceId": "taller-n8n",
+    "notes": "NOTA: El nodo 'Guardar en Tabla n8n' usa el nodo n8n > Table Record > Create. Crea primero la tabla 'respuestas_taller' en n8n Tables (menu lateral) con los campos: nombre, sector, rol, experiencia_ia, proceso_a_automatizar, timestamp."
+  },
+  "id": "taller-flujo-encuesta",
+  "tags": [{ "id": "tag-taller", "name": "taller" }]
+}
