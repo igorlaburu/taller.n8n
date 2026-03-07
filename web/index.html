@@ -256,6 +256,25 @@
 
     .flow-item a:hover { background: var(--border); }
 
+    /* FLUJOS DEMO (gris) */
+    .flow-item.demo .num {
+      background: #6b7280;
+    }
+
+    .source-ref {
+      margin-top: 16px;
+      font-size: 12px;
+      color: #999;
+    }
+
+    .source-ref a {
+      color: #6b7280;
+      text-decoration: none;
+      border-bottom: 1px solid #ccc;
+    }
+
+    .source-ref a:hover { color: #333; }
+
     /* DIVIDER */
     .divider {
       background: var(--light-bg);
@@ -370,6 +389,52 @@
 
       </div>
     </div>
+  </div>
+
+  <!-- FLUJOS DEMO -->
+  <div class="section">
+    <h2>Ejemplos avanzados</h2>
+    <p class="subtitle">Flujos de referencia para ver hasta donde llega n8n. Listos para importar y explorar.</p>
+    <div class="flow-list">
+
+      <div class="flow-item demo">
+        <div class="num">04</div>
+        <div class="info">
+          <strong>Gmail AI Auto-Responder</strong>
+          <span>Gmail Trigger → IA decide si necesita respuesta → crea borrador automaticamente</span>
+        </div>
+        <a href="./demos/04-gmail-ai-autoresponder.json" download>Descargar JSON</a>
+      </div>
+
+      <div class="flow-item demo">
+        <div class="num">05</div>
+        <div class="info">
+          <strong>Agente Telegram con IA y DALL-E</strong>
+          <span>Bot Telegram con memoria → responde texto y genera imagenes con IA</span>
+        </div>
+        <a href="./demos/05-telegram-agente-ia.json" download>Descargar JSON</a>
+      </div>
+
+      <div class="flow-item demo">
+        <div class="num">06</div>
+        <div class="info">
+          <strong>Resumen de documentos Drive → Google Sheets</strong>
+          <span>Google Drive Trigger → OpenAI resume el documento → guarda en hoja de calculo</span>
+        </div>
+        <a href="./demos/06-resumen-documentos-drive-sheets.json" download>Descargar JSON</a>
+      </div>
+
+      <div class="flow-item demo">
+        <div class="num">07</div>
+        <div class="info">
+          <strong>Extraccion de facturas PDF con IA</strong>
+          <span>Gmail con adjunto PDF → LlamaParse + OpenAI extrae datos → Google Sheets</span>
+        </div>
+        <a href="./demos/07-facturas-pdf-openai.json" download>Descargar JSON</a>
+      </div>
+
+    </div>
+    <p class="source-ref">Flujos obtenidos de <a href="https://github.com/enescingoz/awesome-n8n-templates" target="_blank">github.com/enescingoz/awesome-n8n-templates</a> — coleccion publica de templates n8n bajo licencia MIT.</p>
   </div>
 
   <!-- FOOTER -->
