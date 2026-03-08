@@ -175,7 +175,7 @@
     }
     .card {
       background: white;
-      border: 1px solid var(--border);
+      border: 2px solid var(--border);
       border-radius: 12px;
       padding: 20px;
       display: flex;
@@ -184,7 +184,6 @@
     }
     .card:hover {
       border-color: var(--red);
-      border-width: 2px;
       box-shadow: 0 4px 16px rgba(0,0,0,.08);
     }
     .card .icon { font-size: 28px; margin-bottom: 10px; }
@@ -338,8 +337,10 @@
     .modal-close:hover { color: white; }
     #modal-frame {
       flex: 1;
+      min-height: 0;
       border: none;
       width: 100%;
+      height: 100%;
     }
 
     /* Section header groups */
@@ -536,6 +537,8 @@ function openModal(src, title, fetchMode) {
   const modal = document.getElementById('modal');
   const frame = document.getElementById('modal-frame');
   document.getElementById('modal-title').textContent = title;
+  frame.removeAttribute('srcdoc');
+  frame.removeAttribute('src');
   if (fetchMode) {
     frame.srcdoc = '<div style="font-family:Inter,sans-serif;display:flex;align-items:center;justify-content:center;height:100%;color:#666">Cargando informe...</div>';
     fetch(src).then(r => r.text()).then(html => { frame.srcdoc = html; }).catch(() => { frame.srcdoc = '<div style="padding:40px;font-family:sans-serif">Error al cargar el informe.</div>'; });
@@ -548,7 +551,8 @@ function closeModal() {
   const modal = document.getElementById('modal');
   const frame = document.getElementById('modal-frame');
   modal.style.display = 'none';
-  frame.src = ''; frame.srcdoc = '';
+  frame.removeAttribute('src');
+  frame.removeAttribute('srcdoc');
 }
 document.getElementById('modal').addEventListener('click', function(e) { if (e.target === this) closeModal(); });
 document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
