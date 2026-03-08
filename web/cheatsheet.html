@@ -367,6 +367,18 @@ return [
   </div>
 
   <div class="section full">
+    <h2>Errores comunes y soluciones</h2>
+    <table>
+      <tr><th>Error</th><th>Causa</th><th>Solución</th></tr>
+      <tr><td><code>Cannot read property of undefined</code></td><td>Campo no existe en el JSON</td><td>Usar <code>$json.campo || 'default'</code></td></tr>
+      <tr><td><code>Workflow did not return data</code></td><td>Último nodo no devuelve nada</td><td>Revisar que Respond to Webhook esté al final</td></tr>
+      <tr><td><code>401 Unauthorized</code></td><td>Credenciales incorrectas</td><td>Verificar API key o token</td></tr>
+      <tr><td><code>429 Too Many Requests</code></td><td>Rate limit de la API</td><td>Agregar nodo Wait entre llamadas</td></tr>
+      <tr><td><code>Test URL only works in test mode</code></td><td>URL de test en producción</td><td>Usar Test URL con "Listen for test event"</td></tr>
+    </table>
+  </div>
+
+  <div class="section full">
     <h2>Probar webhooks con curl</h2>
     <pre style="max-width:600px;margin:0 auto"><code># GET simple
 curl https://TU-N8N/webhook-test/mi-flujo
@@ -381,18 +393,6 @@ curl -X POST https://TU-N8N/webhook/mi-flujo \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer mi-token" \
   -d '{"dato": "valor"}'</code></pre>
-  </div>
-
-  <div class="section full">
-    <h2>Errores comunes y soluciones</h2>
-    <table>
-      <tr><th>Error</th><th>Causa</th><th>Solución</th></tr>
-      <tr><td><code>Cannot read property of undefined</code></td><td>Campo no existe en el JSON</td><td>Usar <code>$json.campo || 'default'</code></td></tr>
-      <tr><td><code>Workflow did not return data</code></td><td>Último nodo no devuelve nada</td><td>Revisar que Respond to Webhook esté al final</td></tr>
-      <tr><td><code>401 Unauthorized</code></td><td>Credenciales incorrectas</td><td>Verificar API key o token</td></tr>
-      <tr><td><code>429 Too Many Requests</code></td><td>Rate limit de la API</td><td>Agregar nodo Wait entre llamadas</td></tr>
-      <tr><td><code>Test URL only works in test mode</code></td><td>URL de test en producción</td><td>Usar Test URL con "Listen for test event"</td></tr>
-    </table>
   </div>
 
 </div>
