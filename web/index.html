@@ -184,9 +184,10 @@
       background: white;
       border: 2px solid var(--border);
       border-radius: 12px;
-      padding: 20px;
+      padding: 20px 20px 32px;
       display: flex;
       flex-direction: column;
+      position: relative;
       transition: border-color .2s, box-shadow .2s;
     }
     .card:hover {
@@ -213,19 +214,16 @@
       font-family: inherit;
     }
     .card-btn:hover { opacity: .85; }
-    .card-footer {
-      min-height: 62px;
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-end;
-      gap: 6px;
-    }
+    .card-footer { /* no min-height needed — p flex:1 handles spacing */ }
     .card-link {
+      position: absolute;
+      bottom: 10px;
+      left: 20px;
+      right: 20px;
       display: block;
       color: #999;
       font-size: 12px;
       text-align: center;
-      margin-top: 6px;
       text-decoration: none;
     }
     .card-link:hover { color: var(--dark); }
@@ -371,8 +369,62 @@
     .flow-item .info span { font-size: 14px; }
     .flow-item a.dl { font-size: 13px; }
 
-    /* ===== MOBILE QR LAYOUT ===== */
-    @media (max-width: 600px) {
+    /* ===== S2 PANELS (desktop: both visible in one 100vh) ===== */
+    .s2-panel {
+      flex: 1;
+      min-height: 0;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+    .s2-panel > .section-wrap {
+      padding-top: 20px;
+      padding-bottom: 20px;
+      gap: 16px;
+    }
+
+    /* ===== MOBILE ===== */
+    @media (max-width: 768px) {
+      /* Section 2: split into two snap screens */
+      #section2 {
+        height: auto;
+        overflow: visible;
+        scroll-snap-align: none;
+      }
+      .s2-panel {
+        height: 100svh;
+        scroll-snap-align: start;
+        overflow: hidden;
+        background: white;
+      }
+      .s2-panel > .section-wrap {
+        padding: 20px 16px;
+        gap: 10px;
+      }
+
+      /* Cards: 1 column, compact */
+      .grid { grid-template-columns: 1fr; gap: 8px; }
+      .card { padding: 12px 14px 28px; }
+      .card .icon { font-size: 20px; margin-bottom: 6px; }
+      .card h3 { font-size: 14px; margin-bottom: 3px; }
+      .card p { font-size: 12px; margin-bottom: 6px; }
+      .card-btn { font-size: 12px; padding: 7px 10px; }
+      .card-link { font-size: 11px; bottom: 8px; left: 14px; right: 14px; }
+
+      /* Flow items: wrap long text */
+      .flow-item { flex-wrap: wrap; align-items: flex-start; padding: 10px 14px; }
+      .flow-item .info { min-width: 0; }
+      .flow-item .info strong { font-size: 14px; }
+      .flow-item .info span { font-size: 12px; white-space: normal; word-break: break-word; }
+      .flow-item .actions { flex-direction: row; gap: 8px; width: 100%; margin-top: 8px; justify-content: flex-end; }
+      .flow-item a.dl { font-size: 11px; padding: 5px 10px; }
+      .flow-item a.n8n-link { font-size: 11px; padding: 5px 0; }
+
+      /* Reduce h2/subtitle size on mobile (was boosted for projection) */
+      h2 { font-size: 20px; }
+      p.subtitle { font-size: 13px; }
+
+      /* QR section */
       .qr-section { padding: 20px; }
       .qr-inner { gap: 24px; }
       .qr-code { width: 150px; height: 150px; }
@@ -429,87 +481,94 @@
 
 <!-- SECTION 2: MATERIAL -->
 <section class="screen" id="section2">
-  <div class="section-wrap">
-    <div class="section-header">
-      <h2>Material del taller</h2>
-      <p class="subtitle">Accede a los recursos del taller.</p>
+  <!-- Panel A: Material del taller -->
+  <div class="s2-panel">
+    <div class="section-wrap">
+      <div class="section-header">
+        <h2>Material del taller</h2>
+        <p class="subtitle">Accede a los recursos del taller.</p>
+      </div>
+      <div class="grid">
+        <!-- Card 1 -->
+        <div class="card">
+          <div class="icon">🌐</div>
+          <h3>Informe de resultados</h3>
+          <p>Analisis automatico de las respuestas generado por n8n + LLM.</p>
+          <div class="card-footer">
+            <button class="card-btn" onclick="openModal('https://n8n.gako.ai/webhook/ver-informe','Informe de resultados')">Ver informe →</button>
+          </div>
+        </div>
+        <!-- Card 2 -->
+        <div class="card">
+          <div class="icon">🤖</div>
+          <h3>Chatbot Wikipedia</h3>
+          <p>Agente IA con memoria que busca en Wikipedia para responderte.</p>
+          <div class="card-footer">
+            <button class="card-btn" onclick="openModal('./agente-wikipedia.html','Chatbot Wikipedia')">Abrir chatbot →</button>
+          </div>
+        </div>
+        <!-- Card 3 -->
+        <div class="card">
+          <div class="icon">📑</div>
+          <h3>Presentacion</h3>
+          <p>Las diapositivas del taller.</p>
+          <div class="card-footer">
+            <button class="card-btn" onclick="openModal('./presentacion.html','Presentacion')">Ver slides →</button>
+          </div>
+          <a href="./taller-n8n.pdf" download class="card-link">Descargar PDF →</a>
+        </div>
+        <!-- Card 4 -->
+        <div class="card">
+          <div class="icon">📋</div>
+          <h3>Cheatsheet n8n</h3>
+          <p>Referencia rapida de expresiones, nodos y APIs de prueba.</p>
+          <div class="card-footer">
+            <a href="./cheatsheet.html" target="_blank" class="card-btn">Ver cheatsheet →</a>
+          </div>
+        </div>
+      </div>
     </div>
-    <div class="grid">
-      <!-- Card 1 -->
-      <div class="card">
-        <div class="icon">🌐</div>
-        <h3>Informe de resultados</h3>
-        <p>Analisis automatico de las respuestas generado por n8n + LLM.</p>
-        <div class="card-footer">
-          <button class="card-btn" onclick="openModal('https://n8n.gako.ai/webhook/ver-informe','Informe de resultados')">Ver informe →</button>
-        </div>
+  </div>
+  <!-- Panel B: Flujos n8n -->
+  <div class="s2-panel">
+    <div class="section-wrap">
+      <div class="section-header">
+        <h2>Flujos n8n para importar</h2>
+        <p class="subtitle">Descarga los JSON e importalos en tu n8n desde Workflows → Import.</p>
       </div>
-      <!-- Card 2 -->
-      <div class="card">
-        <div class="icon">🤖</div>
-        <h3>Chatbot Wikipedia</h3>
-        <p>Agente IA con memoria que busca en Wikipedia para responderte.</p>
-        <div class="card-footer">
-          <button class="card-btn" onclick="openModal('./agente-wikipedia.html','Chatbot Wikipedia')">Abrir chatbot →</button>
+      <div class="flow-list">
+        <div class="flow-item">
+          <div class="num">01</div>
+          <div class="info">
+            <strong>Formulario de encuesta</strong>
+            <span>n8n Form Trigger → n8n Table → pantalla de confirmacion</span>
+          </div>
+          <div class="actions">
+            <a href="./01-formulario-encuesta.json" download class="dl">Descargar JSON</a>
+            <a href="https://n8n.gako.ai/workflow/ka2cmQNfg3MZDDBG" target="_blank" class="n8n-link">Ver en n8n →</a>
+          </div>
         </div>
-      </div>
-      <!-- Card 3 -->
-      <div class="card">
-        <div class="icon">📑</div>
-        <h3>Presentacion</h3>
-        <p>Las diapositivas del taller.</p>
-        <div class="card-footer">
-          <button class="card-btn" onclick="openModal('./presentacion.html','Presentacion')">Ver slides →</button>
+        <div class="flow-item">
+          <div class="num">02</div>
+          <div class="info">
+            <strong>Generar informe HTML</strong>
+            <span>Webhook → n8n Table → Code → LLM → pagina HTML</span>
+          </div>
+          <div class="actions">
+            <a href="./02-generar-informe.json" download class="dl">Descargar JSON</a>
+            <a href="https://n8n.gako.ai/workflow/vcctyu70QWM6r958" target="_blank" class="n8n-link">Ver en n8n →</a>
+          </div>
         </div>
-        <a href="./taller-n8n.pdf" download class="card-link">Descargar PDF →</a>
-      </div>
-      <!-- Card 4 -->
-      <div class="card">
-        <div class="icon">📋</div>
-        <h3>Cheatsheet n8n</h3>
-        <p>Referencia rapida de expresiones, nodos y APIs de prueba.</p>
-        <div class="card-footer">
-          <button class="card-btn" onclick="openModal('./cheatsheet.html','Cheatsheet n8n')">Ver cheatsheet →</button>
-        </div>
-      </div>
-    </div>
-
-    <div class="section-header">
-      <h2>Flujos n8n para importar</h2>
-      <p class="subtitle">Descarga los JSON e importalos en tu n8n desde Workflows → Import.</p>
-    </div>
-    <div class="flow-list">
-      <div class="flow-item">
-        <div class="num">01</div>
-        <div class="info">
-          <strong>Formulario de encuesta</strong>
-          <span>n8n Form Trigger → n8n Table → pantalla de confirmacion</span>
-        </div>
-        <div class="actions">
-          <a href="./01-formulario-encuesta.json" download class="dl">Descargar JSON</a>
-          <a href="https://n8n.gako.ai/workflow/ka2cmQNfg3MZDDBG" target="_blank" class="n8n-link">Ver en n8n →</a>
-        </div>
-      </div>
-      <div class="flow-item">
-        <div class="num">02</div>
-        <div class="info">
-          <strong>Generar informe HTML</strong>
-          <span>Webhook → n8n Table → Code → LLM → pagina HTML</span>
-        </div>
-        <div class="actions">
-          <a href="./02-generar-informe.json" download class="dl">Descargar JSON</a>
-          <a href="https://n8n.gako.ai/workflow/vcctyu70QWM6r958" target="_blank" class="n8n-link">Ver en n8n →</a>
-        </div>
-      </div>
-      <div class="flow-item">
-        <div class="num">03</div>
-        <div class="info">
-          <strong>Agente IA con Wikipedia</strong>
-          <span>Webhook → AI Agent + Wikipedia + Memoria → respuesta</span>
-        </div>
-        <div class="actions">
-          <a href="./03-agente-wikipedia.json" download class="dl">Descargar JSON</a>
-          <a href="https://n8n.gako.ai/workflow/AJPKydWevVkVRpow" target="_blank" class="n8n-link">Ver en n8n →</a>
+        <div class="flow-item">
+          <div class="num">03</div>
+          <div class="info">
+            <strong>Agente IA con Wikipedia</strong>
+            <span>Webhook → AI Agent + Wikipedia + Memoria → respuesta</span>
+          </div>
+          <div class="actions">
+            <a href="./03-agente-wikipedia.json" download class="dl">Descargar JSON</a>
+            <a href="https://n8n.gako.ai/workflow/AJPKydWevVkVRpow" target="_blank" class="n8n-link">Ver en n8n →</a>
+          </div>
         </div>
       </div>
     </div>

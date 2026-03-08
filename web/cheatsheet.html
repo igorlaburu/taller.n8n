@@ -51,6 +51,20 @@
       transition: color .2s;
     }
     .page-header .back:hover { color: white; }
+    .btn-print {
+      background: var(--red);
+      color: white;
+      border: none;
+      border-radius: 6px;
+      padding: 7px 16px;
+      font-size: 13px;
+      font-weight: 700;
+      font-family: inherit;
+      cursor: pointer;
+      transition: opacity .2s;
+    }
+    .btn-print:hover { opacity: .85; }
+    @media print { .page-header { display: none; } }
 
     /* ===== LAYOUT ===== */
     .content {
@@ -172,6 +186,7 @@
 <div class="page-header">
   <a href="https://gako.ai" target="_blank"><img src="./6t.png" alt="Gako AI"></a>
   <div class="title">Cheatsheet <span>n8n</span></div>
+  <button class="btn-print" onclick="window.print()">⬇ Guardar como PDF</button>
   <a class="back" href="./index.html">← Volver al taller</a>
 </div>
 
