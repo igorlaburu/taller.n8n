@@ -163,7 +163,7 @@
     },
     {
       "parameters": {
-        "jsCode": "const staticData = $getWorkflowStaticData('global');\nstaticData.html = $input.first().json.html_informe;\nstaticData.generadoEn = new Date().toISOString();\nreturn $input.all();"
+        "jsCode": "const staticData = $getWorkflowStaticData('global');\nif (!$('Formatear para OpenAI').item.json.tooSoon) {\n  staticData.html = $input.first().json.html_informe;\n  staticData.generadoEn = new Date().toISOString();\n}\nreturn $input.all();"
       },
       "id": "cache-001",
       "name": "Guardar en Caché",
