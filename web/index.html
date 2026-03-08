@@ -190,6 +190,8 @@
       border-radius: 12px;
       padding: 28px;
       transition: box-shadow .2s, transform .2s;
+      display: flex;
+      flex-direction: column;
     }
 
     .card:hover {
@@ -209,6 +211,7 @@
     }
 
     .card p {
+      flex: 1;
       font-size: 14px;
       color: #666;
       line-height: 1.6;
@@ -227,7 +230,7 @@
 
     .card a:hover { border-color: var(--red); }
 
-    .card.highlight {
+    .card:hover {
       border-color: var(--red);
       border-width: 2px;
     }
@@ -309,6 +312,7 @@
       margin-top: 16px;
       font-size: 12px;
       color: #999;
+      text-align: center;
     }
 
     .source-ref a {
@@ -393,14 +397,14 @@
     <p class="subtitle">Descarga los recursos para seguir practicando despues del taller.</p>
     <div class="grid">
 
-      <div class="card highlight">
+      <div class="card">
         <div class="icon">&#127760;</div>
         <h3>Informe en vivo</h3>
         <p>Analisis automatico de las respuestas generado por n8n + LLM.</p>
         <a href="https://n8n.gako.ai/webhook/generar-informe" target="_blank">Ver informe →</a>
       </div>
 
-      <div class="card highlight">
+      <div class="card">
         <div class="icon">&#129302;</div>
         <h3>Chatbot Wikipedia</h3>
         <p>Agente IA con memoria que busca en Wikipedia para responderte.</p>
