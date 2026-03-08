@@ -527,7 +527,7 @@
           <h3>Informe de resultados</h3>
           <p>Analisis automatico de las respuestas generado por n8n + LLM.</p>
           <div class="card-footer">
-            <button class="card-btn" onclick="openModal('https://n8n.gako.ai/webhook/ver-informe','Informe de resultados')">Ver informe →</button>
+            <button class="card-btn" onclick="openModal('https://n8n.gako.ai/webhook/ver-informe','Informe de resultados',true)">Ver informe →</button>
           </div>
         </div>
         <!-- Card 2 -->
@@ -679,10 +679,11 @@
 </div>
 
 <script>
-function openModal(src, title) {
+function openModal(src, title, narrow) {
   const modal = document.getElementById('modal');
   const frame = document.getElementById('modal-frame');
   document.getElementById('modal-title').textContent = title;
+  modal.querySelector('.modal-box').style.inset = narrow ? '60px 18%' : '60px';
   frame.removeAttribute('src');
   const base = window.location.origin + '/';
   frame.srcdoc = '<div style="font-family:Inter,sans-serif;display:flex;align-items:center;justify-content:center;height:100%;color:#666">Cargando...</div>';
