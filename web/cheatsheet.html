@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cheatsheet n8n — Taller Gako AI</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --red: #de2315;
+      --dark: #1a1a2e;
+      --text: #374151;
+      --muted: #6b7280;
+      --border: #e5e7eb;
+      --code-bg: #f3f4f6;
+      --bg: #ffffff;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      font-size: 14px;
+      color: var(--text);
+      background: var(--bg);
+      line-height: 1.6;
+    }
+
+    /* ===== HEADER ===== */
+    .page-header {
+      background: var(--dark);
+      padding: 20px 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .page-header a { text-decoration: none; }
+    .page-header img { height: 32px; }
+    .page-header .title {
+      color: white;
+      font-weight: 800;
+      font-size: 18px;
+    }
+    .page-header .title span { color: var(--red); }
+    .page-header .back {
+      color: #8892b0;
+      font-size: 13px;
+      text-decoration: none;
+      transition: color .2s;
+    }
+    .page-header .back:hover { color: white; }
+
+    /* ===== LAYOUT ===== */
+    .content {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 32px 40px 60px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0 40px;
+      align-items: start;
+    }
+
+    /* Sections that span full width */
+    .full { grid-column: 1 / -1; }
+
+    /* ===== SECTION BLOCKS ===== */
+    .section {
+      margin-bottom: 28px;
+    }
+
+    h2 {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--red);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      border-bottom: 2px solid var(--red);
+      padding-bottom: 5px;
+      margin-bottom: 12px;
+    }
+
+    h3 {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--red);
+      text-transform: uppercase;
+      letter-spacing: .5px;
+      margin: 12px 0 6px;
+    }
+    h3:first-child { margin-top: 0; }
+
+    /* ===== CODE ===== */
+    pre {
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 10px 12px;
+      margin-bottom: 10px;
+      overflow-x: auto;
+    }
+    code {
+      font-family: 'JetBrains Mono', 'Fira Mono', monospace;
+      font-size: 12px;
+      color: var(--dark);
+      line-height: 1.7;
+    }
+    p code, li code {
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      border-radius: 3px;
+      padding: 1px 5px;
+      font-size: 11.5px;
+      color: var(--dark);
+    }
+
+    /* ===== TABLES ===== */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12.5px;
+      margin-bottom: 10px;
+    }
+    th {
+      background: var(--code-bg);
+      color: var(--dark);
+      font-weight: 700;
+      text-align: left;
+      padding: 6px 10px;
+      border: 1px solid var(--border);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: .5px;
+    }
+    td {
+      padding: 6px 10px;
+      border: 1px solid var(--border);
+      color: var(--text);
+      vertical-align: top;
+    }
+    tr:nth-child(even) td { background: #fafafa; }
+
+    /* ===== LISTS ===== */
+    ul {
+      padding-left: 18px;
+      margin-bottom: 8px;
+    }
+    li {
+      margin-bottom: 3px;
+      font-size: 13px;
+      color: var(--text);
+    }
+
+    p { margin-bottom: 8px; font-size: 13px; }
+
+    hr { display: none; }
+
+    /* ===== PRINT ===== */
+    @media print {
+      .page-header .back { display: none; }
+      body { font-size: 11px; }
+      .content { padding: 16px; gap: 0 28px; }
+      pre { page-break-inside: avoid; }
+      .section { page-break-inside: avoid; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="page-header">
+  <a href="https://gako.ai" target="_blank"><img src="./6t.png" alt="Gako AI"></a>
+  <div class="title">Cheatsheet <span>n8n</span></div>
+  <a class="back" href="./index.html">← Volver al taller</a>
+</div>
+
+<div class="content">
+
+  <!-- COL 1 -->
+
+  <div>
+    <div class="section">
+      <h2>Expresiones — item actual</h2>
+      <pre><code>{{ $json.campo }}                    # campo del item actual
+{{ $json.objeto.subcampo }}          # campo anidado
+{{ $json.lista[0] }}                 # primer elemento de array
+{{ $json.lista[0].nombre }}          # campo dentro de array</code></pre>
+    </div>
+
+    <div class="section">
+      <h2>Referenciar otros nodos</h2>
+      <pre><code>{{ $('Nodo').item.json.campo }}       # item actual del nodo
+{{ $('Nodo').all()[0].json.campo }}  # primer item del nodo
+{{ $('Nodo').all().length }}         # cuántos items tiene</code></pre>
+    </div>
+
+    <div class="section">
+      <h2>Fecha y hora</h2>
+      <pre><code>{{ $now }}                           # fecha/hora actual
+{{ $now.toISO() }}                   # "2025-01-15T10:30:00Z"
+{{ $now.format('YYYY-MM-DD') }}      # "2025-01-15"
+{{ $now.format('DD/MM/YYYY HH:mm') }}# "15/01/2025 10:30"
+{{ $now.minus({days: 7}).toISO() }}  # hace 7 días</code></pre>
+    </div>
+
+    <div class="section">
+      <h2>Strings</h2>
+      <pre><code>{{ $json.texto.toUpperCase() }}      # MAYÚSCULAS
+{{ $json.texto.toLowerCase() }}      # minúsculas
+{{ $json.texto.trim() }}             # quitar espacios
+{{ $json.texto.includes('hola') }}   # true/false
+{{ $json.texto.replace('a','b') }}   # reemplazar
+{{ $json.texto.split(',') }}         # dividir en array
+{{ $json.a + ' ' + $json.b }}        # concatenar</code></pre>
+    </div>
+
+    <div class="section">
+      <h2>Números y arrays</h2>
+      <pre><code>{{ $json.precio * 1.21 }}            # calcular IVA
+{{ Math.round($json.valor) }}        # redondear
+{{ parseInt($json.texto) }}          # texto a entero
+{{ $json.numero.toFixed(2) }}        # 2 decimales
+
+{{ $json.lista.length }}             # longitud
+{{ $json.lista.join(', ') }}         # unir con coma
+{{ $json.lista.filter(x => x > 5) }}# filtrar
+{{ $json.lista.map(x => x * 2) }}   # transformar</code></pre>
+    </div>
+
+    <div class="section">
+      <h2>Condicionales</h2>
+      <pre><code>{{ $json.activo ? 'SÍ' : 'NO' }}
+{{ $json.precio > 100 ? 'caro' : 'barato' }}
+{{ $json.nombre || 'Sin nombre' }}   # valor por defecto</code></pre>
+    </div>
+
+    <div class="section">
+      <h2>Variables especiales</h2>
+      <table>
+        <tr><th>Variable</th><th>Descripción</th></tr>
+        <tr><td><code>$json</code></td><td>Datos del item actual</td></tr>
+        <tr><td><code>$binary</code></td><td>Datos binarios del item</td></tr>
+        <tr><td><code>$now</code></td><td>Fecha/hora actual (luxon)</td></tr>
+        <tr><td><code>$today</code></td><td>Fecha de hoy (sin hora)</td></tr>
+        <tr><td><code>$workflow.name</code></td><td>Nombre del flujo</td></tr>
+        <tr><td><code>$execution.id</code></td><td>ID de la ejecución</td></tr>
+        <tr><td><code>$execution.mode</code></td><td>"manual" o "trigger"</td></tr>
+        <tr><td><code>$env.MI_VAR</code></td><td>Variable de entorno</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- COL 2 -->
+
+  <div>
+    <div class="section">
+      <h2>Nodos más usados</h2>
+
+      <h3>Webhook</h3>
+      <ul>
+        <li>Trigger que recibe peticiones HTTP</li>
+        <li>Método: GET, POST, PUT, DELETE</li>
+        <li>Respuesta: inmediata o al final del flujo</li>
+      </ul>
+
+      <h3>HTTP Request</h3>
+      <ul>
+        <li>Llama cualquier API externa</li>
+        <li>Configurar: Method, URL, Headers, Body</li>
+        <li>Auth: Bearer Token, Basic Auth, etc.</li>
+      </ul>
+
+      <h3>Set</h3>
+      <ul>
+        <li>Crear o modificar campos del item</li>
+        <li>Modo "Keep Only Set": elimina el resto</li>
+      </ul>
+
+      <h3>IF / Switch</h3>
+      <ul>
+        <li>IF: divide en rama true y false</li>
+        <li>Switch: múltiples ramas por valor</li>
+        <li>Condiciones: igual, mayor, contiene, regex…</li>
+      </ul>
+
+      <h3>Code (JavaScript)</h3>
+      <ul>
+        <li>Lógica personalizada en JS</li>
+        <li><code>return items</code> para pasar items al nodo siguiente</li>
+      </ul>
+
+      <h3>Merge / Loop Over Items / Wait</h3>
+      <ul>
+        <li>Merge: une dos ramas (Append, By Index, By Key)</li>
+        <li>Loop: itera items de uno en uno</li>
+        <li>Wait: pausa X segundos (útil para rate limits)</li>
+      </ul>
+    </div>
+
+    <div class="section">
+      <h2>Código en el nodo Code</h2>
+      <pre><code>// Modificar y devolver items
+return items.map(item => ({
+  json: {
+    ...item.json,               // mantener campos existentes
+    nuevo_campo: 'valor',
+    precio_iva: item.json.precio * 1.21
+  }
+}));
+
+// Filtrar items
+return items.filter(item => item.json.activo === true);
+
+// Crear items nuevos
+return [
+  { json: { id: 1, nombre: 'Primero' } },
+  { json: { id: 2, nombre: 'Segundo' } }
+];</code></pre>
+    </div>
+
+    <div class="section">
+      <h2>Atajos de teclado</h2>
+      <table>
+        <tr><th>Atajo</th><th>Acción</th></tr>
+        <tr><td><code>Ctrl/Cmd + S</code></td><td>Guardar flujo</td></tr>
+        <tr><td><code>Ctrl/Cmd + Z</code></td><td>Deshacer</td></tr>
+        <tr><td><code>Ctrl/Cmd + A</code></td><td>Seleccionar todo</td></tr>
+        <tr><td><code>Ctrl/Cmd + C / V</code></td><td>Copiar / Pegar nodos</td></tr>
+        <tr><td><code>Delete</code></td><td>Eliminar nodo</td></tr>
+        <tr><td><code>Ctrl/Cmd + Enter</code></td><td>Ejecutar flujo</td></tr>
+        <tr><td><code>Scroll</code></td><td>Zoom in/out</td></tr>
+        <tr><td><code>Espacio + Drag</code></td><td>Mover el canvas</td></tr>
+      </table>
+    </div>
+
+    <div class="section">
+      <h2>Probar webhooks con curl</h2>
+      <pre><code># GET simple
+curl https://TU-N8N/webhook-test/mi-flujo
+
+# POST con JSON
+curl -X POST https://TU-N8N/webhook-test/mi-flujo \
+  -H "Content-Type: application/json" \
+  -d '{"nombre": "Ana", "email": "ana@ejemplo.com"}'
+
+# POST con autenticación
+curl -X POST https://TU-N8N/webhook/mi-flujo \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer mi-token" \
+  -d '{"dato": "valor"}'</code></pre>
+    </div>
+  </div>
+
+  <!-- FULL WIDTH ROWS -->
+
+  <div class="section full">
+    <h2>APIs públicas gratuitas para practicar</h2>
+    <table>
+      <tr><th>API</th><th>URL</th><th>Descripción</th></tr>
+      <tr><td>Open-Meteo</td><td><code>https://api.open-meteo.com/v1/forecast?latitude=40.42&amp;longitude=-3.70&amp;current_weather=true</code></td><td>Clima en tiempo real</td></tr>
+      <tr><td>JSONPlaceholder</td><td><code>https://jsonplaceholder.typicode.com/posts</code></td><td>Posts de prueba</td></tr>
+      <tr><td>Cat Facts</td><td><code>https://catfact.ninja/fact</code></td><td>Datos aleatorios</td></tr>
+      <tr><td>Random User</td><td><code>https://randomuser.me/api/</code></td><td>Usuarios aleatorios</td></tr>
+      <tr><td>IP Info</td><td><code>https://ipinfo.io/json</code></td><td>Info de tu IP</td></tr>
+      <tr><td>Chuck Norris</td><td><code>https://api.chucknorris.io/jokes/random</code></td><td>Chistes aleatorios</td></tr>
+    </table>
+  </div>
+
+  <div class="section full">
+    <h2>Errores comunes y soluciones</h2>
+    <table>
+      <tr><th>Error</th><th>Causa</th><th>Solución</th></tr>
+      <tr><td><code>Cannot read property of undefined</code></td><td>Campo no existe en el JSON</td><td>Usar <code>$json.campo || 'default'</code></td></tr>
+      <tr><td><code>Workflow did not return data</code></td><td>Último nodo no devuelve nada</td><td>Revisar que Respond to Webhook esté al final</td></tr>
+      <tr><td><code>401 Unauthorized</code></td><td>Credenciales incorrectas</td><td>Verificar API key o token</td></tr>
+      <tr><td><code>429 Too Many Requests</code></td><td>Rate limit de la API</td><td>Agregar nodo Wait entre llamadas</td></tr>
+      <tr><td><code>Test URL only works in test mode</code></td><td>URL de test en producción</td><td>Usar Test URL con "Listen for test event"</td></tr>
+    </table>
+  </div>
+
+</div>
+</body>
+</html>
