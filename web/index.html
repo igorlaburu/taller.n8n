@@ -667,6 +667,9 @@
   </div>
   <footer>
     Taller de Automatizacion con IA y n8n &mdash; <a href="https://gako.ai">Gako AI</a>
+    <span style="margin-left:24px;opacity:.3;font-size:11px">
+      <a href="#" id="trigger-informe" style="color:inherit;text-decoration:none" onclick="triggerInforme(event)">&#9679;</a>
+    </span>
   </footer>
 </section>
 
@@ -720,6 +723,18 @@ function enterFullscreen() {
   if (fn) fn.call(el).then(() => {
     try { screen.orientation.lock('landscape').catch(() => {}); } catch(e) {}
   }).catch(() => {});
+}
+async function triggerInforme(e) {
+  e.preventDefault();
+  const el = document.getElementById('trigger-informe');
+  el.style.opacity = '1';
+  try {
+    await fetch('https://n8n.gako.ai/webhook/generar-informe');
+    el.textContent = '✓';
+    setTimeout(() => { el.textContent = '●'; el.style.opacity = '.3'; }, 3000);
+  } catch(_) {
+    el.style.opacity = '.3';
+  }
 }
 function closeModal() {
   const modal = document.getElementById('modal');

@@ -4,23 +4,18 @@
     {
       "parameters": {
         "path": "generar-informe",
-        "responseMode": "lastNode",
+        "responseMode": "responseNode",
         "options": {}
       },
-      "id": "5bb228c0-9f9d-4009-959a-b90ee015daa6",
+      "id": "aa1a9a89-4a98-4701-86e6-5d92ac920930",
       "name": "Trigger: Generar Informe",
       "type": "n8n-nodes-base.webhook",
       "typeVersion": 2,
-      "position": [-544, -64],
+      "position": [
+        -480,
+        0
+      ],
       "webhookId": "generar-informe-001"
-    },
-    {
-      "parameters": {},
-      "type": "n8n-nodes-base.manualTrigger",
-      "typeVersion": 1,
-      "position": [-560, 160],
-      "id": "a3fb7a01-38e1-443c-9a0c-b8b4fef8d716",
-      "name": "When clicking 'Execute workflow'"
     },
     {
       "parameters": {
@@ -35,8 +30,11 @@
       },
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
-      "position": [-304, -64],
-      "id": "137323f1-d686-4ca5-a6e6-94fe821e9236",
+      "position": [
+        -240,
+        0
+      ],
+      "id": "023487b5-c98e-4dbf-a2eb-19e3ce71bcd0",
       "name": "Get row(s)"
     },
     {
@@ -45,21 +43,27 @@
         "destinationFieldName": "respuestas",
         "options": {}
       },
-      "id": "4fe2d3ab-0af4-4946-bde5-97b6d962f571",
+      "id": "3a1947ab-466d-48cb-a071-7ac8dee5125f",
       "name": "Agregar Todas las Respuestas",
       "type": "n8n-nodes-base.aggregate",
       "typeVersion": 1,
-      "position": [-96, -64]
+      "position": [
+        -32,
+        0
+      ]
     },
     {
       "parameters": {
-        "jsCode": "const respuestas = items[0].json.respuestas;\nconst total = respuestas.length;\n\nif (total === 0) {\n  return [{ json: { texto_para_ia: 'No hay respuestas todavia.', total: 0 } }];\n}\n\nconst sectores = {};\nconst roles = {};\nconst experiencias = {};\nconst procesos = [];\n\nrespuestas.forEach(r => {\n  sectores[r.sector] = (sectores[r.sector] || 0) + 1;\n  roles[r.rol] = (roles[r.rol] || 0) + 1;\n  experiencias[r.experiencia_ia] = (experiencias[r.experiencia_ia] || 0) + 1;\n  if (r.proceso_a_automatizar && r.proceso_a_automatizar !== 'No especificado') {\n    procesos.push(`- ${r.nombre} (${r.rol}): \"${r.proceso_a_automatizar}\"`);\n  }\n});\n\nconst formatearConteos = (obj) =>\n  Object.entries(obj)\n    .sort((a, b) => b[1] - a[1])\n    .map(([k, v]) => `  - ${k}: ${v} persona(s)`)\n    .join('\\n');\n\nconst textoParaIA = `Eres un analista de datos experto. Analiza los resultados de esta encuesta de un taller de IA y n8n y genera un informe ejecutivo en español que:\n1. Destaque los hallazgos mas relevantes del grupo\n2. Identifique patrones en los perfiles de los asistentes\n3. Agrupe y comente los procesos que quieren automatizar\n4. De 2-3 recomendaciones concretas sobre en que hacer enfasis durante el taller\nUsa un tono profesional pero cercano. Maximo 400 palabras.\n\nDATOS DE LA ENCUESTA:\nTotal de participantes: ${total}\n\nSECTORES REPRESENTADOS:\n${formatearConteos(sectores)}\n\nROLES:\n${formatearConteos(roles)}\n\nEXPERIENCIA CON IA:\n${formatearConteos(experiencias)}\n\nPROCESOS QUE LES GUSTARIA AUTOMATIZAR:\n${procesos.length > 0 ? procesos.join('\\n') : '  (nadie respondio esta pregunta)'}\n`;\n\nreturn [{ json: { texto_para_ia: textoParaIA, total } }];"
+        "jsCode": "// Deduplicación: no regenerar si hace menos de 2 minutos\nconst state = $getWorkflowStaticData('global');\nif (state.generadoEn && (new Date() - new Date(state.generadoEn)) < 120000) {\n  return [{ json: { tooSoon: true, total: 0, texto_para_ia: 'responde solo: ok' } }];\n}\n\nconst respuestas = items[0].json.respuestas;\nconst total = respuestas.length;\n\nif (total === 0) {\n  return [{ json: { texto_para_ia: 'No hay respuestas todavia.', total: 0 } }];\n}\n\nconst sectores = {};\nconst roles = {};\nconst experiencias = {};\nconst procesos = [];\n\nrespuestas.forEach(r => {\n  sectores[r.sector] = (sectores[r.sector] || 0) + 1;\n  roles[r.rol] = (roles[r.rol] || 0) + 1;\n  experiencias[r.experiencia_ia] = (experiencias[r.experiencia_ia] || 0) + 1;\n  if (r.proceso_a_automatizar && r.proceso_a_automatizar !== 'No especificado') {\n    procesos.push(`- ${r.nombre} (${r.rol}): \"${r.proceso_a_automatizar}\"`);\n  }\n});\n\nconst formatearConteos = (obj) =>\n  Object.entries(obj)\n    .sort((a, b) => b[1] - a[1])\n    .map(([k, v]) => `  - ${k}: ${v} persona(s)`)\n    .join('\\n');\n\nconst textoParaIA = `Eres un analista de datos experto. Analiza los resultados de esta encuesta de un taller de IA y n8n y genera un informe ejecutivo en español que:\n1. Destaque los hallazgos mas relevantes del grupo\n2. Identifique patrones en los perfiles de los asistentes\n3. Agrupe y comente los procesos que quieren automatizar\n4. De 2-3 recomendaciones concretas sobre en que hacer enfasis durante el taller\nUsa un tono profesional pero cercano. Maximo 400 palabras. \n\nDATOS DE LA ENCUESTA:\nTotal de participantes: ${total}\n\nSECTORES REPRESENTADOS:\n${formatearConteos(sectores)}\n\nROLES:\n${formatearConteos(roles)}\n\nEXPERIENCIA CON IA:\n${formatearConteos(experiencias)}\n\nPROCESOS QUE LES GUSTARIA AUTOMATIZAR:\n${procesos.length > 0 ? procesos.join('\\n') : '  (nadie respondio esta pregunta)'}\n`;\n\nreturn [{ json: { texto_para_ia: textoParaIA, total } }];"
       },
-      "id": "8ce90bc8-67e9-4ccc-ad5a-b8919e566611",
+      "id": "ddb74971-caf2-4fde-a8eb-cee95d92a51c",
       "name": "Formatear para OpenAI",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
-      "position": [128, -64]
+      "position": [
+        192,
+        0
+      ]
     },
     {
       "parameters": {
@@ -69,8 +73,11 @@
       },
       "type": "@n8n/n8n-nodes-langchain.chainLlm",
       "typeVersion": 1.9,
-      "position": [272, -64],
-      "id": "eba33db0-a5ae-4e89-a8c8-ab9f9e9a19b1",
+      "position": [
+        368,
+        0
+      ],
+      "id": "769d968b-77a5-4e41-a3a6-83a1bf4de531",
       "name": "Basic LLM Chain"
     },
     {
@@ -80,8 +87,11 @@
       },
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenRouter",
       "typeVersion": 1,
-      "position": [272, 144],
-      "id": "82dfc98d-55bf-4f08-8235-59429a7c98b4",
+      "position": [
+        368,
+        272
+      ],
+      "id": "5f27c51c-6496-4696-8f66-4433f4aaaf31",
       "name": "OpenRouter Chat Model",
       "credentials": {
         "openRouterApi": {
@@ -97,18 +107,21 @@
             {
               "id": "h001",
               "name": "html_informe",
-              "value": "=<!DOCTYPE html>\n<html lang=\"es\">\n<head>\n  <meta charset=\"UTF-8\">\n  <title>Informe del Taller</title>\n  <style>\n    body { font-family: 'Segoe UI', sans-serif; max-width: 800px; margin: 40px auto; padding: 20px; color: #1a1a2e; }\n    h1 { color: #de2315; border-bottom: 3px solid #de2315; padding-bottom: 10px; }\n    h2 { color: #0f3460; margin-top: 30px; }\n    .stats { display: flex; gap: 20px; margin: 20px 0; }\n    .stat-box { background: #f0f4ff; border-left: 4px solid #de2315; padding: 15px 20px; border-radius: 6px; flex: 1; }\n    .stat-box .numero { font-size: 36px; font-weight: bold; color: #de2315; }\n    .stat-box .label { color: #666; font-size: 14px; }\n    .analisis { background: #fafafa; border: 1px solid #eee; padding: 20px; border-radius: 8px; line-height: 1.7; white-space: pre-wrap; }\n    .footer { margin-top: 40px; color: #aaa; font-size: 13px; text-align: center; }\n  </style>\n</head>\n<body>\n  <h1>Informe del Taller — Generado en tiempo real por n8n + IA</h1>\n  <div class=\"stats\">\n    <div class=\"stat-box\">\n      <div class=\"numero\">{{ $('Formatear para OpenAI').item.json.total }}</div>\n      <div class=\"label\">Participantes</div>\n    </div>\n    <div class=\"stat-box\">\n      <div class=\"numero\">{{ $now.toFormat('HH:mm') }}</div>\n      <div class=\"label\">Hora de generacion</div>\n    </div>\n    <div class=\"stat-box\">\n      <div class=\"numero\">{{ $now.toFormat('dd/MM/yyyy') }}</div>\n      <div class=\"label\">Fecha</div>\n    </div>\n  </div>\n  <h2>Analisis de la IA</h2>\n  <div class=\"analisis\">{{ $json.text }}</div>\n  <div class=\"footer\">Generado automaticamente por n8n + OpenRouter · Taller de Automatizacion con IA · Gako AI</div>\n</body>\n</html>",
+              "value": "={{ $('Formatear para OpenAI').item.json.tooSoon ? `<!DOCTYPE html><html lang=\"es\"><head><meta charset=\"UTF-8\"><title>Informe</title><style>body{font-family:sans-serif;max-width:800px;margin:80px auto;padding:20px;color:#1a1a2e;text-align:center}</style></head><body><p style=\"font-size:20px;color:#de2315\">&#9200; Informe generado recientemente.</p><p style=\"color:#666;margin-top:12px\">Espera 2 minutos antes de volver a generar.</p></body></html>` : `<!DOCTYPE html>\n<html lang=\"es\">\n<head>\n  <meta charset=\"UTF-8\">\n  <title>Informe del Taller</title>\n  <style>\n    body { font-family: 'Segoe UI', sans-serif; max-width: 800px; margin: 40px auto; padding: 20px; color: #1a1a2e; }\n    h1 { color: #de2315; border-bottom: 3px solid #de2315; padding-bottom: 10px; }\n    h2 { color: #0f3460; margin-top: 30px; }\n    .stats { display: flex; gap: 20px; margin: 20px 0; }\n    .stat-box { background: #f0f4ff; border-left: 4px solid #de2315; padding: 15px 20px; border-radius: 6px; flex: 1; }\n    .stat-box .numero { font-size: 36px; font-weight: bold; color: #de2315; }\n    .stat-box .label { color: #666; font-size: 14px; }\n    .analisis { background: #fafafa; border: 1px solid #eee; padding: 20px; border-radius: 8px; line-height: 1.7; white-space: pre-wrap; }\n    .footer { margin-top: 40px; color: #aaa; font-size: 13px; text-align: center; }\n  </style>\n</head>\n<body>\n  <h1>Informe del Taller — Generado en tiempo real por n8n + IA</h1>\n  <div class=\"stats\">\n    <div class=\"stat-box\">\n      <div class=\"numero\">{{ $('Formatear para OpenAI').item.json.total }}</div>\n      <div class=\"label\">Participantes</div>\n    </div>\n    <div class=\"stat-box\">\n      <div class=\"numero\">{{ $now.toFormat('HH:mm') }}</div>\n      <div class=\"label\">Hora de generacion</div>\n    </div>\n    <div class=\"stat-box\">\n      <div class=\"numero\">{{ $now.toFormat('dd/MM/yyyy') }}</div>\n      <div class=\"label\">Fecha</div>\n    </div>\n  </div>\n  <h2>Analisis de la IA</h2>\n  <div class=\"analisis\">{{ $json.text }}</div>\n  <div class=\"footer\">Generado automaticamente por n8n + OpenRouter · Taller de Automatizacion con IA · Gako</div>\n</body>\n</html>` }}",
               "type": "string"
             }
           ]
         },
         "options": {}
       },
-      "id": "cccdc73a-9f71-425d-b201-2b75d3d6cb2b",
+      "id": "f47c1a51-bb6d-470b-b698-648e2655d942",
       "name": "Construir HTML del Informe",
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
-      "position": [560, -64]
+      "position": [
+        880,
+        0
+      ]
     },
     {
       "parameters": {
@@ -126,42 +139,221 @@
           }
         }
       },
-      "id": "f00d3b7a-4b22-43dd-8f6e-2655f4d6cf14",
+      "id": "f374e22c-8554-48c2-8b7b-1943e59e84b1",
       "name": "Servir Informe HTML",
       "type": "n8n-nodes-base.respondToWebhook",
       "typeVersion": 1.1,
-      "position": [784, -64]
+      "position": [
+        1280,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": " const texto = items[0].json.text;                                                                                                                                     \n                                                                                     \n  const html = texto\n    // Títulos con **texto:**\n    .replace(/\\*\\*(.+?):\\*\\*/g, '<strong>$1:</strong>')\n    // Negrita **texto**\n    .replace(/\\*\\*(.+?)\\*\\*/g, '<strong>$1</strong>')\n    // Saltos de línea dobles → párrafos\n    .replace(/\\n\\n/g, '</p><p>')\n    // Listas con guión\n    .replace(/^- (.+)$/gm, '<li>$1</li>')\n    // Envolver listas en <ul>\n    .replace(/(<li>.*<\\/li>)/gs, '<ul>$1</ul>')\n    // Saltos de línea simples\n    .replace(/\\n/g, '<br>');\n\n  return [{ json: { ...items[0].json, text: '<p>' + html + '</p>' } }];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        688,
+        0
+      ],
+      "id": "6373e5c8-9e0d-42be-82df-893095011e44",
+      "name": "Code in JavaScript"
+    },
+    {
+      "parameters": {
+        "jsCode": "const staticData = $getWorkflowStaticData('global');\nstaticData.html = $input.first().json.html_informe;\nstaticData.generadoEn = new Date().toISOString();\nreturn $input.all();"
+      },
+      "id": "cache-001",
+      "name": "Guardar en Caché",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1056,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "path": "ver-informe",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "cache-002",
+      "name": "Ver Informe (Caché)",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -480,
+        240
+      ],
+      "webhookId": "ver-informe-001"
+    },
+    {
+      "parameters": {
+        "jsCode": "const staticData = $getWorkflowStaticData('global');\nconst html = staticData.html || '<h2 style=\"font-family:sans-serif;text-align:center;padding:60px\">El informe aún no ha sido generado. Vuelve en unos minutos.</h2>';\nreturn [{ json: { html } }];"
+      },
+      "id": "cache-003",
+      "name": "Leer Caché",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -240,
+        240
+      ]
+    },
+    {
+      "parameters": {
+        "respondWith": "text",
+        "responseBody": "={{ $json.html }}",
+        "options": {
+          "responseCode": 200,
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Content-Type",
+                "value": "text/html; charset=utf-8"
+              }
+            ]
+          }
+        }
+      },
+      "id": "cache-004",
+      "name": "Servir Caché HTML",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [
+        -32,
+        240
+      ]
     }
   ],
   "connections": {
     "Trigger: Generar Informe": {
-      "main": [[{ "node": "Get row(s)", "type": "main", "index": 0 }]]
-    },
-    "When clicking 'Execute workflow'": {
-      "main": [[{ "node": "Get row(s)", "type": "main", "index": 0 }]]
+      "main": [
+        [
+          {
+            "node": "Get row(s)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     },
     "Get row(s)": {
-      "main": [[{ "node": "Agregar Todas las Respuestas", "type": "main", "index": 0 }]]
+      "main": [
+        [
+          {
+            "node": "Agregar Todas las Respuestas",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     },
     "Agregar Todas las Respuestas": {
-      "main": [[{ "node": "Formatear para OpenAI", "type": "main", "index": 0 }]]
+      "main": [
+        [
+          {
+            "node": "Formatear para OpenAI",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     },
     "Formatear para OpenAI": {
-      "main": [[{ "node": "Basic LLM Chain", "type": "main", "index": 0 }]]
+      "main": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     },
     "Basic LLM Chain": {
-      "main": [[{ "node": "Construir HTML del Informe", "type": "main", "index": 0 }]]
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     },
     "OpenRouter Chat Model": {
-      "ai_languageModel": [[{ "node": "Basic LLM Chain", "type": "ai_languageModel", "index": 0 }]]
+      "ai_languageModel": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
     },
     "Construir HTML del Informe": {
-      "main": [[{ "node": "Servir Informe HTML", "type": "main", "index": 0 }]]
+      "main": [
+        [
+          {
+            "node": "Guardar en Caché",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "Construir HTML del Informe",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Guardar en Caché": {
+      "main": [
+        [
+          {
+            "node": "Servir Informe HTML",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Ver Informe (Caché)": {
+      "main": [
+        [
+          {
+            "node": "Leer Caché",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Leer Caché": {
+      "main": [
+        [
+          {
+            "node": "Servir Caché HTML",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "pinData": {},
   "meta": {
-    "templateCredsSetupCompleted": true,
-    "instanceId": "27ac13f192f5d9c17d7476e0635254356594500f4af854f919d8c0494a777c41"
+    "templateCredsSetupCompleted": true
   }
 }
