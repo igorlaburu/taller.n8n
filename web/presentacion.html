@@ -433,6 +433,26 @@
     }
     .nav-btn:hover { background: var(--red); color: white; border-color: var(--red); }
     .slide-counter { font-size: 13px; color: var(--muted); font-family: 'JetBrains Mono', monospace; min-width: 52px; text-align: center; }
+    /* ===== PRINT ===== */
+    @media print {
+      @page { size: A4 landscape; margin: 0; }
+      body { overflow: visible; }
+      .site-header, .progress, .nav { display: none !important; }
+      .deck {
+        position: static;
+        height: auto;
+        overflow: visible;
+      }
+      .slide {
+        display: flex !important;
+        position: relative;
+        width: 100vw;
+        height: 100vh;
+        page-break-after: always;
+        overflow: hidden;
+      }
+      .slide:last-child { page-break-after: avoid; }
+    }
   </style>
 </head>
 <body>
