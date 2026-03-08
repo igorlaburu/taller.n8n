@@ -172,6 +172,29 @@
 
     hr { display: none; }
 
+    /* ===== PRINT HEADER ===== */
+    .print-header {
+      display: none;
+    }
+    @media print {
+      .print-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 0 8px;
+        margin-bottom: 10px;
+        border-bottom: 2px solid var(--red);
+      }
+      .print-header .ph-title {
+        font-size: 15px;
+        font-weight: 800;
+        color: var(--dark);
+        letter-spacing: -.3px;
+      }
+      .print-header .ph-title span { color: var(--red); }
+      .print-header img { height: 22px; }
+    }
+
     /* ===== PRINT ===== */
     @media print {
       @page { margin: 8mm; size: A4; }
@@ -192,6 +215,11 @@
 <div class="page-header">
   <a href="https://gako.ai" target="_blank"><img src="./6t.png" alt="Gako AI"></a>
 <a class="back" href="./index.html">← Volver al taller</a>
+</div>
+
+<div class="print-header">
+  <span class="ph-title">Cheatsheet <span>n8n</span> — Taller Gako AI</span>
+  <img src="./1t.png" alt="Gako AI">
 </div>
 
 <div class="content">
