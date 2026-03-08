@@ -564,14 +564,17 @@
     <div class="slide-tag">Limitaciones</div>
     <h2>Limitaciones <span>reales</span></h2>
     <div class="content">
-      <ul class="bullets">
-        <li><strong>Alucinaciones:</strong> inventa con confianza</li>
-        <li><strong>Contexto limitado:</strong> no recuerda conversaciones largas</li>
-        <li><strong>Sin memoria nativa:</strong> hay que construirla</li>
-        <li><strong>Coste por token:</strong> escala con el uso</li>
-        <li><strong>Sesgo de entrenamiento:</strong> refleja los datos con que aprendió</li>
-      </ul>
-      <div class="callout">Supervisión humana, clave en decisiones importantes</div>
+      <div class="tbl-wrap">
+        <table>
+          <tr><th>Limitación</th><th>Qué significa</th></tr>
+          <tr><td><strong>Alucinaciones</strong></td><td>Inventa datos con confianza</td></tr>
+          <tr><td><strong>Contexto limitado</strong></td><td>Olvida conversaciones largas</td></tr>
+          <tr><td><strong>Coste por token</strong></td><td>Textos largos = caro</td></tr>
+          <tr><td><strong>Sin memoria nativa</strong></td><td>Necesita arquitectura extra</td></tr>
+          <tr><td><strong>Sesgo de entrenamiento</strong></td><td>Refleja los datos con que aprendió</td></tr>
+        </table>
+      </div>
+      <div class="callout" style="margin-top:auto">Supervisión humana imprescindible</div>
     </div>
   </div>
 
@@ -580,14 +583,27 @@
     <div class="slide-tag">Aplicaciones</div>
     <h2>Ya es realidad <span>en empresas</span></h2>
     <div class="content">
-      <ul class="bullets">
-        <li>Chatbot de atención al cliente 24/7</li>
-        <li>Criba y clasificación automática de CVs</li>
-        <li>Revisión de contratos y detección de cláusulas</li>
-        <li>Extracción de datos de facturas y albaranes</li>
-        <li>Resumen de reuniones y llamadas grabadas</li>
-      </ul>
-      <div class="callout"><strong>RAG:</strong> la IA responde usando tu documentación privada</div>
+      <div class="two-col">
+        <div>
+          <h3 style="font-size:clamp(14px,1.4vw,20px);color:var(--red);text-transform:uppercase;letter-spacing:1px;margin-bottom:clamp(10px,1.2vh,18px)">Estado del arte</h3>
+          <ul class="bullets">
+            <li>Multimodal</li>
+            <li>Agentes que navegan</li>
+            <li>Razonamiento extendido</li>
+            <li>Modelos locales</li>
+            <li>RAG privado</li>
+          </ul>
+        </div>
+        <div>
+          <h3 style="font-size:clamp(14px,1.4vw,20px);color:var(--red);text-transform:uppercase;letter-spacing:1px;margin-bottom:clamp(10px,1.2vh,18px)">En empresas</h3>
+          <ul class="bullets">
+            <li>Chatbot 24/7</li>
+            <li>Criba de CVs</li>
+            <li>Extracción de facturas</li>
+            <li>Revisión de contratos</li>
+          </ul>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -603,7 +619,10 @@
         <li>Mayor valor en procesos de alto volumen</li>
         <li>Supervisión humana en decisiones críticas</li>
       </ul>
-      <div class="callout">No solo "¿puede la IA?" sino "¿tiene sentido automatizarlo?"</div>
+      <div style="margin-top:auto;background:#fff5f5;border-left:4px solid var(--red);border-radius:0 12px 12px 0;padding:clamp(18px,2.5vh,36px) clamp(24px,3vw,48px)">
+        <div style="font-size:clamp(22px,3vw,44px);font-weight:800;color:var(--dark);line-height:1.3">¿Puede la IA hacerlo?</div>
+        <div style="font-size:clamp(22px,3vw,44px);font-weight:800;color:var(--red);line-height:1.3;margin-top:0.3em">→ ¿Tiene sentido automatizarlo?</div>
+      </div>
     </div>
   </div>
 
