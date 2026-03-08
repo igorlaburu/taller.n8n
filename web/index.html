@@ -286,6 +286,103 @@
     }
 
     footer a { color: var(--red); text-decoration: none; }
+
+    /* CONTACT */
+    .contact-section {
+      background: var(--dark);
+      padding: 64px 24px;
+    }
+
+    .contact-section h2 {
+      color: white;
+      font-size: 26px;
+      margin-bottom: 8px;
+      text-align: center;
+    }
+
+    .contact-section .subtitle {
+      color: #8892b0;
+      font-size: 16px;
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    .contact-form {
+      max-width: 520px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .contact-form input,
+    .contact-form textarea {
+      background: transparent;
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 8px;
+      padding: 12px 16px;
+      color: white;
+      font-size: 15px;
+      font-family: inherit;
+      width: 100%;
+      transition: border-color .2s;
+    }
+
+    .contact-form input::placeholder,
+    .contact-form textarea::placeholder {
+      color: #8892b0;
+    }
+
+    .contact-form input:focus,
+    .contact-form textarea:focus {
+      outline: none;
+      border-color: var(--red);
+    }
+
+    .contact-form textarea {
+      resize: none;
+      height: 110px;
+    }
+
+    .contact-form .checkbox-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      color: #a8b2d8;
+      font-size: 14px;
+      line-height: 1.5;
+      cursor: pointer;
+    }
+
+    .contact-form .checkbox-row input[type="checkbox"] {
+      width: 17px;
+      height: 17px;
+      flex-shrink: 0;
+      margin-top: 2px;
+      accent-color: var(--red);
+      cursor: pointer;
+    }
+
+    .contact-form .privacy-note {
+      font-size: 12px;
+      color: #555e7a;
+      text-align: center;
+    }
+
+    .contact-form button {
+      background: var(--red);
+      color: white;
+      font-size: 16px;
+      font-weight: 700;
+      padding: 14px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: opacity .2s;
+      font-family: inherit;
+    }
+
+    .contact-form button:hover { opacity: .85; }
   </style>
 </head>
 <body>
@@ -429,6 +526,23 @@
     </div>
     <p class="source-ref">Flujos obtenidos de <a href="https://github.com/enescingoz/awesome-n8n-templates" target="_blank">github.com/enescingoz/awesome-n8n-templates</a> — coleccion publica de templates n8n bajo licencia MIT.</p>
   </div>
+
+  <!-- CONTACTO -->
+  <section class="contact-section">
+    <h2>¿Hablamos?</h2>
+    <p class="subtitle">Dudas sobre el taller, proyectos de automatizacion o simplemente saludar.</p>
+    <form class="contact-form" onsubmit="return false;">
+      <input type="text" name="nombre" placeholder="Nombre (opcional)">
+      <input type="email" name="email" placeholder="Email *" required>
+      <textarea name="mensaje" placeholder="Mensaje (opcional)"></textarea>
+      <label class="checkbox-row">
+        <input type="checkbox" name="newsletter">
+        Quiero recibir novedades sobre talleres y automatizacion con IA
+      </label>
+      <p class="privacy-note">Tus datos se usan solo para responderte. No se comparten con terceros.</p>
+      <button type="submit">Enviar</button>
+    </form>
+  </section>
 
   <!-- FOOTER -->
   <footer>
