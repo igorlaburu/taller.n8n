@@ -236,6 +236,13 @@
     .flow-item .info strong { display: block; font-size: 15px; color: var(--dark); }
     .flow-item .info span { font-size: 13px; color: #888; }
 
+    .flow-item .actions {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      flex-shrink: 0;
+    }
+
     .flow-item a {
       background: var(--light-bg);
       color: var(--mid);
@@ -246,9 +253,17 @@
       text-decoration: none;
       white-space: nowrap;
       transition: background .2s;
+      text-align: center;
     }
 
     .flow-item a:hover { background: var(--border); }
+
+    .flow-item a.open-n8n {
+      background: var(--red);
+      color: white;
+    }
+
+    .flow-item a.open-n8n:hover { opacity: .85; background: var(--red); }
 
     /* FLUJOS DEMO (gris) */
     .flow-item.demo .num {
@@ -456,7 +471,10 @@
             <strong>Formulario de encuesta</strong>
             <span>n8n Form Trigger → n8n Table → pantalla de confirmacion</span>
           </div>
-          <a href="./01-formulario-encuesta.json" download>Descargar JSON</a>
+          <div class="actions">
+            <a href="./01-formulario-encuesta.json" download>Descargar JSON</a>
+            <a href="https://n8n.gako.ai/workflow/pendiente-01" target="_blank" class="open-n8n">Abrir en n8n</a>
+          </div>
         </div>
 
         <div class="flow-item">
@@ -465,7 +483,10 @@
             <strong>Generar informe HTML</strong>
             <span>Webhook → n8n Table → Code → OpenAI → pagina HTML</span>
           </div>
-          <a href="./02-generar-informe.json" download>Descargar JSON</a>
+          <div class="actions">
+            <a href="./02-generar-informe.json" download>Descargar JSON</a>
+            <a href="https://n8n.gako.ai/workflow/pendiente-02" target="_blank" class="open-n8n">Abrir en n8n</a>
+          </div>
         </div>
 
         <div class="flow-item">
@@ -474,7 +495,10 @@
             <strong>Agente IA con Wikipedia</strong>
             <span>Webhook → AI Agent + Wikipedia + Memoria → respuesta</span>
           </div>
-          <a href="./03-agente-wikipedia.json" download>Descargar JSON</a>
+          <div class="actions">
+            <a href="./03-agente-wikipedia.json" download>Descargar JSON</a>
+            <a href="https://n8n.gako.ai/workflow/pendiente-03" target="_blank" class="open-n8n">Abrir en n8n</a>
+          </div>
         </div>
 
       </div>
@@ -493,7 +517,10 @@
           <strong>Gmail AI Auto-Responder</strong>
           <span>Gmail Trigger → IA decide si necesita respuesta → crea borrador automaticamente</span>
         </div>
-        <a href="./demos/04-gmail-ai-autoresponder.json" download>Descargar JSON</a>
+        <div class="actions">
+          <a href="./demos/04-gmail-ai-autoresponder.json" download>Descargar JSON</a>
+          <a href="https://n8n.gako.ai/workflow/pendiente-04" target="_blank" class="open-n8n">Abrir en n8n</a>
+        </div>
       </div>
 
       <div class="flow-item demo">
@@ -502,7 +529,10 @@
           <strong>Agente Telegram con IA y DALL-E</strong>
           <span>Bot Telegram con memoria → responde texto y genera imagenes con IA</span>
         </div>
-        <a href="./demos/05-telegram-agente-ia.json" download>Descargar JSON</a>
+        <div class="actions">
+          <a href="./demos/05-telegram-agente-ia.json" download>Descargar JSON</a>
+          <a href="https://n8n.gako.ai/workflow/pendiente-05" target="_blank" class="open-n8n">Abrir en n8n</a>
+        </div>
       </div>
 
       <div class="flow-item demo">
@@ -511,7 +541,10 @@
           <strong>Resumen de documentos Drive → Google Sheets</strong>
           <span>Google Drive Trigger → OpenAI resume el documento → guarda en hoja de calculo</span>
         </div>
-        <a href="./demos/06-resumen-documentos-drive-sheets.json" download>Descargar JSON</a>
+        <div class="actions">
+          <a href="./demos/06-resumen-documentos-drive-sheets.json" download>Descargar JSON</a>
+          <a href="https://n8n.gako.ai/workflow/pendiente-06" target="_blank" class="open-n8n">Abrir en n8n</a>
+        </div>
       </div>
 
       <div class="flow-item demo">
@@ -520,7 +553,10 @@
           <strong>Extraccion de facturas PDF con IA</strong>
           <span>Gmail con adjunto PDF → LlamaParse + OpenAI extrae datos → Google Sheets</span>
         </div>
-        <a href="./demos/07-facturas-pdf-openai.json" download>Descargar JSON</a>
+        <div class="actions">
+          <a href="./demos/07-facturas-pdf-openai.json" download>Descargar JSON</a>
+          <a href="https://n8n.gako.ai/workflow/pendiente-07" target="_blank" class="open-n8n">Abrir en n8n</a>
+        </div>
       </div>
 
     </div>
