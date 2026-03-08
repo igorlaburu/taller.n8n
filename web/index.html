@@ -525,7 +525,7 @@
       <div class="grid">
         <!-- Card 1 -->
         <div class="card">
-          <div class="icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#4b5563" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/><line x1="2" y1="20" x2="22" y2="20"/></svg></div>
+          <div class="icon" onclick="triggerInforme(event)" style="cursor:pointer" title="Regenerar informe"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#4b5563" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/><line x1="2" y1="20" x2="22" y2="20"/></svg></div>
           <h3>Informe de resultados</h3>
           <p>Analisis automatico de las respuestas generado por n8n + LLM.</p>
           <div class="card-footer">
@@ -667,9 +667,6 @@
   </div>
   <footer>
     Taller de Automatizacion con IA y n8n &mdash; <a href="https://gako.ai">Gako AI</a>
-    <span style="margin-left:24px;opacity:.3;font-size:11px">
-      <a href="#" id="trigger-informe" style="color:inherit;text-decoration:none" onclick="triggerInforme(event)">&#9679;</a>
-    </span>
   </footer>
 </section>
 
@@ -725,15 +722,16 @@ function enterFullscreen() {
   }).catch(() => {});
 }
 async function triggerInforme(e) {
-  e.preventDefault();
-  const el = document.getElementById('trigger-informe');
-  el.style.opacity = '1';
+  e.stopPropagation();
+  const icon = e.currentTarget;
+  const svg = icon.querySelector('svg');
+  svg.style.stroke = '#de2315';
   try {
     await fetch('https://n8n.gako.ai/webhook/generar-informe');
-    el.textContent = '✓';
-    setTimeout(() => { el.textContent = '●'; el.style.opacity = '.3'; }, 3000);
+    svg.style.stroke = '#22c55e';
+    setTimeout(() => { svg.style.stroke = '#4b5563'; }, 2000);
   } catch(_) {
-    el.style.opacity = '.3';
+    svg.style.stroke = '#4b5563';
   }
 }
 function closeModal() {
