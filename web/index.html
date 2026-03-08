@@ -424,12 +424,41 @@
       h2 { font-size: 20px; }
       p.subtitle { font-size: 13px; }
 
-      /* QR section */
-      .qr-section { padding: 20px; }
-      .qr-inner { gap: 24px; }
-      .qr-code { width: 150px; height: 150px; }
-      .qr-url { font-size: 20px; }
-      .qr-contacts a { font-size: 13px; }
+      /* Hero screen: split into two snap sections */
+      #hero-screen {
+        height: auto;
+        overflow: visible;
+      }
+      .hero {
+        height: 100svh;
+        scroll-snap-align: start;
+        overflow: hidden;
+        flex-shrink: 0;
+      }
+      .qr-section {
+        height: 100svh;
+        scroll-snap-align: start;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 40px 24px;
+        flex-shrink: 0;
+      }
+      .qr-inner {
+        flex-direction: column;
+        align-items: center;
+        gap: 32px;
+      }
+      .qr-left { align-items: center; }
+      .qr-code { width: 180px; height: 180px; }
+      .qr-url { font-size: 22px; }
+      .qr-contacts {
+        grid-template-columns: 24px 1fr;
+        gap: 16px 12px;
+      }
+      .qr-contacts svg { width: 22px; height: 22px; }
+      .qr-contacts a { font-size: 14px; }
     }
   </style>
 </head>
