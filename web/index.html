@@ -3,13 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Taller de Automatizacion con IA y n8n — Gako AI</title>
+  <title>Taller Automatizacion IA y n8n — Gako AI</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
   <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
     :root {
       --red: #de2315;
       --dark: #1a1a2e;
@@ -17,98 +15,88 @@
       --light-bg: #f5f7ff;
       --border: #e2e8f0;
     }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html {
+      scroll-snap-type: y mandatory;
+      height: 100%;
+      font-family: 'Inter', sans-serif;
+    }
+    body { height: 100%; }
 
-    body {
-      font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
-      background: var(--light-bg);
-      color: var(--dark);
-      min-height: 100vh;
+    /* ===== SECTION SNAP ===== */
+    .screen {
+      height: 100vh;
+      scroll-snap-align: start;
+      overflow: hidden;
     }
 
-    /* HERO SCREEN */
-    .hero-screen {
-      height: 100vh;
+    /* ===== SECTION 1: HERO ===== */
+    #hero-screen {
       display: flex;
       flex-direction: column;
     }
-
-    /* HERO */
     .hero {
       flex: 1;
-      background: linear-gradient(135deg, var(--dark) 0%, #16213e 60%, var(--mid) 100%);
-      color: white;
-      padding: 40px;
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 60%, #0f3460 100%);
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: space-evenly;
+      padding: 40px;
     }
-
-    .hero-logo-wrap img {
-      height: 65px;
-      width: auto;
-    }
-
+    .hero-logo-wrap img { display: block; }
     .hero-body {
       display: flex;
       flex-direction: column;
       align-items: center;
       text-align: center;
     }
-
-    .hero .tag {
-      display: inline-block;
+    .tag {
       background: var(--red);
       color: white;
       font-size: 12px;
       font-weight: 700;
-      letter-spacing: 2px;
+      letter-spacing: 1px;
       text-transform: uppercase;
-      padding: 4px 14px;
-      border-radius: 20px;
+      padding: 6px 16px;
+      border-radius: 999px;
       margin-bottom: 20px;
     }
-
-    .hero h1 {
+    .hero-body h1 {
       font-size: clamp(28px, 5vw, 52px);
       font-weight: 800;
-      line-height: 1.15;
-      margin-bottom: 16px;
       color: white;
+      margin-bottom: 16px;
+      line-height: 1.15;
     }
-
-    .hero h1 span { color: var(--red); }
-
-    .hero p {
-      font-size: 18px;
+    .hero-body h1 span { color: var(--red); }
+    .hero-body p {
       color: #a8b2d8;
-      max-width: 560px;
-      margin: 0 auto 36px;
+      font-size: clamp(14px, 2vw, 18px);
+      max-width: 540px;
       line-height: 1.6;
+      margin-bottom: 28px;
     }
-
-    .hero .cta {
+    .cta {
       display: inline-block;
       background: var(--red);
       color: white;
-      font-size: 18px;
       font-weight: 700;
-      padding: 16px 40px;
+      font-size: 15px;
+      padding: 14px 32px;
       border-radius: 8px;
       text-decoration: none;
       transition: opacity .2s;
     }
+    .cta:hover { opacity: .85; }
 
-    .hero .cta:hover { opacity: .85; }
-
-    /* QR */
+    /* QR Section */
     .qr-section {
       background: white;
       border-top: 4px solid var(--red);
       padding: 40px;
       flex-shrink: 0;
     }
-
     .qr-inner {
       display: flex;
       align-items: center;
@@ -117,429 +105,453 @@
       max-width: 900px;
       margin: 0 auto;
     }
-
-    .qr-code {
-      width: 220px;
-      height: 220px;
-    }
-
     .qr-url {
       font-size: clamp(22px, 3vw, 34px);
       font-weight: 800;
-      color: var(--dark);
-      line-height: 1.2;
+      color: #1a1a2e;
     }
-
+    .qr-code {
+      width: 220px;
+      height: 220px;
+      flex-shrink: 0;
+    }
     .qr-contacts {
       display: grid;
       grid-template-columns: 28px 1fr;
       gap: 20px 14px;
       align-items: center;
     }
-
-    .qr-contacts svg {
-      width: 28px;
-      height: 28px;
-      justify-self: center;
-    }
-
+    .qr-contacts svg { display: block; color: #374151; }
     .qr-contacts a {
+      color: #1a1a2e;
       text-decoration: none;
-      color: var(--dark);
-      font-size: 15px;
+      font-size: 14px;
       font-weight: 600;
-      transition: color .2s;
     }
-
     .qr-contacts a:hover { color: var(--red); }
 
-
-    /* CARDS GRID */
-    .section {
+    /* ===== SECTION 2: MATERIAL ===== */
+    #section2 {
+      background: white;
+      display: flex;
+      flex-direction: column;
+    }
+    #section3 {
+      background: var(--light-bg);
+      display: flex;
+      flex-direction: column;
+    }
+    .section-wrap {
       max-width: 1200px;
       margin: 0 auto;
-      padding: 60px 32px;
+      padding: 40px 32px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 28px;
     }
-
-    .section h2 {
-      font-size: 26px;
-      color: var(--mid);
-      margin-bottom: 8px;
+    #section3 .section-wrap {
+      gap: 24px;
     }
-
-    .section .subtitle {
+    h2 {
+      font-size: 22px;
+      font-weight: 800;
+      margin-bottom: 4px;
+    }
+    #section2 h2 { color: var(--mid); }
+    #section3 h2 { color: var(--dark); }
+    p.subtitle {
       color: #666;
-      margin-bottom: 32px;
-      font-size: 16px;
+      font-size: 14px;
+      margin-bottom: 0;
     }
 
+    /* Grid */
     .grid {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
-      gap: 20px;
+      gap: 16px;
     }
-
-    @media (max-width: 900px) {
-      .grid { grid-template-columns: repeat(2, 1fr); }
-    }
-
-    @media (max-width: 560px) {
-      .grid { grid-template-columns: 1fr; }
-    }
-
     .card {
       background: white;
       border: 1px solid var(--border);
       border-radius: 12px;
-      padding: 28px;
-      transition: box-shadow .2s, transform .2s;
+      padding: 20px;
       display: flex;
       flex-direction: column;
+      transition: border-color .2s, box-shadow .2s;
     }
-
-    .card:hover {
-      box-shadow: 0 8px 24px rgba(0,0,0,.08);
-      transform: translateY(-2px);
-    }
-
-    .card .icon {
-      font-size: 32px;
-      margin-bottom: 14px;
-    }
-
-    .card h3 {
-      font-size: 17px;
-      color: var(--dark);
-      margin-bottom: 8px;
-    }
-
-    .card p {
-      flex: 1;
-      font-size: 14px;
-      color: #666;
-      line-height: 1.6;
-      margin-bottom: 18px;
-    }
-
-    .card a {
-      display: inline-block;
-      color: var(--red);
-      font-size: 14px;
-      font-weight: 700;
-      text-decoration: none;
-      border-bottom: 2px solid transparent;
-      transition: border-color .2s;
-    }
-
-    .card a:hover { border-color: var(--red); }
-
     .card:hover {
       border-color: var(--red);
       border-width: 2px;
+      box-shadow: 0 4px 16px rgba(0,0,0,.08);
     }
+    .card .icon { font-size: 28px; margin-bottom: 10px; }
+    .card h3 { font-size: 15px; color: var(--dark); margin-bottom: 6px; font-weight: 700; }
+    .card p { font-size: 13px; color: #666; line-height: 1.5; flex: 1; margin-bottom: 14px; }
+    .card-btn {
+      display: block;
+      background: var(--red);
+      color: white;
+      font-size: 13px;
+      font-weight: 700;
+      padding: 8px 14px;
+      border-radius: 6px;
+      border: none;
+      cursor: pointer;
+      text-decoration: none;
+      text-align: center;
+      transition: opacity .2s;
+      width: 100%;
+      font-family: inherit;
+    }
+    .card-btn:hover { opacity: .85; }
+    .card-link {
+      display: block;
+      color: #999;
+      font-size: 12px;
+      text-align: center;
+      margin-top: 6px;
+      text-decoration: none;
+    }
+    .card-link:hover { color: var(--dark); }
 
-    /* FLUJOS */
+    /* Flow list */
     .flow-list {
       display: flex;
       flex-direction: column;
-      gap: 12px;
+      gap: 10px;
     }
-
     .flow-item {
       background: white;
       border: 1px solid var(--border);
       border-radius: 10px;
-      padding: 18px 24px;
+      padding: 14px 20px;
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 16px;
     }
-
     .flow-item .num {
       background: var(--red);
       color: white;
       font-weight: 800;
-      font-size: 13px;
-      width: 32px;
-      height: 32px;
+      font-size: 12px;
+      width: 30px;
+      height: 30px;
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
       flex-shrink: 0;
     }
-
+    .flow-item.demo .num { background: #6b7280; }
     .flow-item .info { flex: 1; }
-    .flow-item .info strong { display: block; font-size: 15px; color: var(--dark); }
-    .flow-item .info span { font-size: 13px; color: #888; }
-
+    .flow-item .info strong { display: block; font-size: 14px; color: var(--dark); }
+    .flow-item .info span { font-size: 12px; color: #888; }
     .flow-item .actions {
       display: flex;
       flex-direction: column;
-      gap: 6px;
+      gap: 4px;
       flex-shrink: 0;
     }
-
-    .flow-item a {
+    .flow-item a.dl {
       background: var(--red);
       color: white;
-      font-size: 13px;
+      font-size: 12px;
       font-weight: 700;
-      padding: 8px 16px;
+      padding: 7px 14px;
       border-radius: 6px;
       text-decoration: none;
       white-space: nowrap;
+      text-align: center;
       transition: opacity .2s;
-      text-align: center;
     }
-
-    .flow-item a:hover { opacity: .85; }
-
-    .flow-item a.open-n8n {
-      background: none;
-      color: #999;
-      font-weight: 400;
-      padding: 4px 0;
-      font-size: 12px;
-    }
-
-    .flow-item a.open-n8n:hover { opacity: 1; color: var(--mid); }
-
-    /* FLUJOS DEMO (gris) */
-    .flow-item.demo .num {
-      background: #6b7280;
-    }
-
-    .source-ref {
-      margin-top: 16px;
-      font-size: 12px;
-      color: #999;
-      text-align: center;
-    }
-
-    .source-ref a {
-      color: #6b7280;
+    .flow-item a.dl:hover { opacity: .85; }
+    .flow-item a.n8n-link {
+      color: #aaa;
+      font-size: 11px;
       text-decoration: none;
-      border-bottom: 1px solid #ccc;
+      text-align: center;
+      padding: 2px 0;
+      transition: color .2s;
     }
+    .flow-item a.n8n-link:hover { color: var(--mid); }
 
-    .source-ref a:hover { color: #333; }
-
-    /* DIVIDER */
-    .divider {
-      background: var(--light-bg);
-      border-top: 1px solid var(--border);
-      border-bottom: 1px solid var(--border);
+    /* Source ref */
+    .source-ref {
+      text-align: center;
+      font-size: 12px;
+      color: #999;
     }
+    .source-ref a { color: #999; }
+    .source-ref a:hover { color: var(--mid); }
 
-    /* FOOTER */
+    /* Footer */
     footer {
       background: var(--dark);
       color: #8892b0;
       text-align: center;
-      padding: 28px 24px;
+      padding: 20px;
       font-size: 13px;
+      margin-top: auto;
     }
-
     footer a { color: var(--red); text-decoration: none; }
 
+    /* ===== MODAL ===== */
+    #modal {
+      position: fixed;
+      inset: 0;
+      z-index: 1000;
+      background: rgba(0,0,0,0.85);
+      display: none;
+      align-items: stretch;
+    }
+    .modal-box {
+      position: absolute;
+      inset: 30px;
+      border-radius: 12px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      background: white;
+    }
+    .modal-header {
+      background: var(--dark);
+      color: white;
+      padding: 12px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .modal-header span { font-weight: 600; font-size: 15px; }
+    .modal-close {
+      background: none;
+      border: none;
+      color: #8892b0;
+      cursor: pointer;
+      font-size: 14px;
+      transition: color .2s;
+      font-family: inherit;
+    }
+    .modal-close:hover { color: white; }
+    #modal-frame {
+      flex: 1;
+      border: none;
+      width: 100%;
+    }
+
+    /* Section header groups */
+    .section-header { display: flex; flex-direction: column; gap: 4px; }
   </style>
 </head>
 <body>
 
-  <div class="hero-screen">
-
-  <!-- HERO -->
-  <section class="hero">
+<!-- SECTION 1: HERO -->
+<section class="screen" id="hero-screen">
+  <div class="hero">
     <div class="hero-logo-wrap">
-      <a href="https://gako.ai" target="_blank">
-        <img src="./6t.png" alt="Gako AI">
-      </a>
+      <a href="https://gako.ai" target="_blank"><img src="./6t.png" alt="Gako AI" style="height:65px"></a>
     </div>
     <div class="hero-body">
       <div class="tag">Taller practico</div>
       <h1>Automatizacion con <span>IA y n8n</span></h1>
       <p>De la teoria a tu primer flujo en produccion. Todo el material del taller disponible aqui.</p>
-      <a class="cta" href="https://n8n.gako.ai/form/encuesta-taller" target="_blank">
-        Rellenar la encuesta
-      </a>
+      <a class="cta" href="https://n8n.gako.ai/form/encuesta-taller" target="_blank">Rellenar la encuesta</a>
     </div>
-  </section>
-
-  <!-- QR -->
-  <section class="qr-section">
+  </div>
+  <div class="qr-section">
     <div class="qr-inner">
-
-      <!-- Izquierda: URL -->
       <div class="qr-url">taller.gako.ai</div>
-
-      <!-- Centro: QR -->
       <div class="qr-code">
         <svg width="100%" height="100%" version="1.1" viewBox="0 0 29 29" xmlns="http://www.w3.org/2000/svg"><path d="M2,2H3V3H2zM3,2H4V3H3zM4,2H5V3H4zM5,2H6V3H5zM6,2H7V3H6zM7,2H8V3H7zM8,2H9V3H8zM10,2H11V3H10zM13,2H14V3H13zM16,2H17V3H16zM20,2H21V3H20zM21,2H22V3H21zM22,2H23V3H22zM23,2H24V3H23zM24,2H25V3H24zM25,2H26V3H25zM26,2H27V3H26zM2,3H3V4H2zM8,3H9V4H8zM10,3H11V4H10zM13,3H14V4H13zM14,3H15V4H14zM16,3H17V4H16zM18,3H19V4H18zM20,3H21V4H20zM26,3H27V4H26zM2,4H3V5H2zM4,4H5V5H4zM5,4H6V5H5zM6,4H7V5H6zM8,4H9V5H8zM10,4H11V5H10zM12,4H13V5H12zM13,4H14V5H13zM14,4H15V5H14zM15,4H16V5H15zM16,4H17V5H16zM17,4H18V5H17zM18,4H19V5H18zM20,4H21V5H20zM22,4H23V5H22zM23,4H24V5H23zM24,4H25V5H24zM26,4H27V5H26zM2,5H3V6H2zM4,5H5V6H4zM5,5H6V6H5zM6,5H7V6H6zM8,5H9V6H8zM11,5H12V6H11zM14,5H15V6H14zM15,5H16V6H15zM18,5H19V6H18zM20,5H21V6H20zM22,5H23V6H22zM23,5H24V6H23zM24,5H25V6H24zM26,5H27V6H26zM2,6H3V7H2zM4,6H5V7H4zM5,6H6V7H5zM6,6H7V7H6zM8,6H9V7H8zM10,6H11V7H10zM11,6H12V7H11zM12,6H13V7H12zM13,6H14V7H13zM14,6H15V7H14zM15,6H16V7H15zM16,6H17V7H16zM18,6H19V7H18zM20,6H21V7H20zM22,6H23V7H22zM23,6H24V7H23zM24,6H25V7H24zM26,6H27V7H26zM2,7H3V8H2zM8,7H9V8H8zM11,7H12V8H11zM13,7H14V8H13zM14,7H15V8H14zM15,7H16V8H15zM16,7H17V8H16zM20,7H21V8H20zM26,7H27V8H26zM2,8H3V9H2zM3,8H4V9H3zM4,8H5V9H4zM5,8H6V9H5zM6,8H7V9H6zM7,8H8V9H7zM8,8H9V9H8zM10,8H11V9H10zM12,8H13V9H12zM14,8H15V9H14zM16,8H17V9H16zM18,8H19V9H18zM20,8H21V9H20zM21,8H22V9H21zM22,8H23V9H22zM23,8H24V9H23zM24,8H25V9H24zM25,8H26V9H25zM26,8H27V9H26zM12,9H13V10H12zM13,9H14V10H13zM15,9H16V10H15zM17,9H18V10H17zM18,9H19V10H18zM2,10H3V11H2zM5,10H6V11H5zM6,10H7V11H6zM7,10H8V11H7zM8,10H9V11H8zM9,10H10V11H9zM10,10H11V11H10zM13,10H14V11H13zM17,10H18V11H17zM18,10H19V11H18zM19,10H20V11H19zM22,10H23V11H22zM24,10H25V11H24zM25,10H26V11H25zM26,10H27V11H26zM2,11H3V12H2zM3,11H4V12H3zM4,11H5V12H4zM5,11H6V12H5zM7,11H8V12H7zM13,11H14V12H13zM15,11H16V12H15zM16,11H17V12H16zM17,11H18V12H17zM21,11H22V12H21zM22,11H23V12H22zM23,11H24V12H23zM24,11H25V12H24zM25,11H26V12H25zM3,12H4V13H3zM6,12H7V13H6zM7,12H8V13H7zM8,12H9V13H8zM9,12H10V13H9zM11,12H12V13H11zM12,12H13V13H12zM13,12H14V13H13zM15,12H16V13H15zM17,12H18V13H17zM19,12H20V13H19zM20,12H21V13H20zM22,12H23V13H22zM23,12H24V13H23zM26,12H27V13H26zM2,13H3V14H2zM3,13H4V14H3zM4,13H5V14H4zM10,13H11V14H10zM11,13H12V14H11zM12,13H13V14H12zM13,13H14V14H13zM14,13H15V14H14zM17,13H18V14H17zM20,13H21V14H20zM21,13H22V14H21zM23,13H24V14H23zM24,13H25V14H24zM25,13H26V14H25zM26,13H27V14H26zM3,14H4V15H3zM6,14H7V15H6zM7,14H8V15H7zM8,14H9V15H8zM11,14H12V15H11zM12,14H13V15H12zM13,14H15V15H13zM18,14H19V15H18zM20,14H21V15H20zM26,14H27V15H26zM2,15H3V16H2zM6,15H7V16H6zM9,15H10V16H9zM10,15H11V16H10zM11,15H12V16H11zM12,15H13V16H12zM14,15H15V16H14zM15,15H16V16H15zM16,15H17V16H16zM17,15H18V16H17zM22,15H23V16H22zM25,15H26V16H25zM2,16H3V17H2zM3,16H4V17H3zM5,16H6V17H5zM7,16H8V17H7zM8,16H9V17H8zM9,16H10V17H9zM12,16H13V17H12zM15,16H16V17H15zM17,16H18V17H17zM18,16H19V17H18zM19,16H20V17H19zM22,16H23V17H22zM23,16H24V17H23zM24,16H25V17H24zM25,16H26V17H25zM26,16H27V17H26zM2,17H3V18H2zM5,17H6V18H5zM6,17H7V18H6zM7,17H8V18H7zM12,17H13V18H12zM14,17H15V18H14zM17,17H18V18H17zM18,17H19V18H18zM20,17H21V18H20zM21,17H22V18H21zM23,17H24V18H23zM24,17H25V18H24zM26,17H27V18H26zM2,18H3V19H2zM5,18H6V19H5zM8,18H9V19H8zM9,18H10V19H9zM13,18H14V19H13zM14,18H15V19H14zM15,18H16V19H15zM17,18H18V19H17zM18,18H19V19H18zM19,18H20V19H19zM20,18H21V19H20zM21,18H22V19H21zM22,18H23V19H22zM24,18H25V19H24zM25,18H26V19H25zM10,19H11V20H10zM13,19H14V20H13zM15,19H16V20H15zM17,19H18V20H17zM18,19H19V20H18zM22,19H23V20H22zM24,19H25V20H24zM25,19H26V20H25zM2,20H3V21H2zM3,20H4V21H3zM4,20H5V21H4zM5,20H6V21H5zM6,20H7V21H6zM7,20H8V21H7zM8,20H9V21H8zM10,20H11V21H10zM14,20H15V21H14zM15,20H16V21H15zM16,20H17V21H16zM18,20H19V21H18zM20,20H21V21H20zM22,20H23V21H22zM26,20H27V21H26zM2,21H3V22H2zM8,21H9V22H8zM10,21H11V22H10zM11,21H12V22H11zM13,21H14V22H13zM15,21H16V22H15zM17,21H18V22H17zM18,21H19V22H18zM22,21H23V22H22zM2,22H3V23H2zM4,22H5V23H4zM5,22H6V23H5zM6,22H7V23H6zM8,22H9V23H8zM10,22H11V23H10zM12,22H13V23H12zM13,22H14V23H13zM15,22H16V23H15zM17,22H18V23H17zM18,22H19V23H18zM19,22H20V23H19zM20,22H21V23H20zM21,22H22V23H21zM22,22H23V23H22zM25,22H26V23H25zM26,22H27V23H26zM2,23H3V24H2zM4,23H5V24H4zM5,23H6V24H5zM6,23H7V24H6zM8,23H9V24H8zM10,23H11V24H10zM12,23H13V24H12zM14,23H15V24H14zM15,23H16V24H15zM16,23H17V24H16zM17,23H18V24H17zM18,23H19V24H18zM19,23H20V24H19zM20,23H21V24H20zM25,23H26V24H25zM26,23H27V24H26zM2,24H3V25H2zM4,24H5V25H4zM5,24H6V25H5zM6,24H7V25H6zM8,24H9V25H8zM12,24H13V25H12zM13,24H14V25H13zM15,24H16V25H15zM19,24H20V25H19zM22,24H23V25H22zM23,24H24V25H23zM24,24H25V25H24zM25,24H26V25H25zM26,24H27V25H26zM2,25H3V26H2zM8,25H9V26H8zM11,25H12V26H11zM12,25H13V26H12zM13,25H14V26H13zM14,25H15V26H14zM15,25H16V26H15zM21,25H22V26H21zM22,25H23V26H22zM24,25H25V26H24zM25,25H26V26H25zM26,25H27V26H26zM2,26H3V27H2zM3,26H4V27H3zM4,26H5V27H4zM5,26H6V27H5zM6,26H7V27H6zM7,26H8V27H7zM8,26H9V27H8zM10,26H11V27H10zM12,26H13V27H12zM13,26H14V27H13zM14,26H15V27H14zM15,26H16V27H15zM18,26H19V27H18zM19,26H20V27H19zM20,26H21V27H20zM23,26H24V27H23zM26,26H27V27H26z" fill="#000000" fill-rule="nonzero" stroke="none"/></svg>
       </div>
-
-      <!-- Derecha: contactos -->
       <div class="qr-contacts">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#374151"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#374151" width="28" height="28"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
         <a href="https://www.linkedin.com/in/laburu" target="_blank">linkedin.com/in/laburu</a>
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 01-2.06 0L2 7"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="28" height="28"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 01-2.06 0L2 7"/></svg>
         <a href="mailto:igor@gako.ai">igor@gako.ai</a>
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="28" height="28"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
         <a href="https://gako.ai/?contacto=1" target="_blank">Formulario de contacto</a>
       </div>
-
     </div>
-  </section>
+  </div>
+</section>
 
-  </div><!-- /.hero-screen -->
-
-  <!-- RECURSOS -->
-  <div class="section">
-    <h2>Material del taller</h2>
-    <p class="subtitle">Descarga los recursos para seguir practicando despues del taller.</p>
+<!-- SECTION 2: MATERIAL -->
+<section class="screen" id="section2">
+  <div class="section-wrap">
+    <div class="section-header">
+      <h2>Material del taller</h2>
+      <p class="subtitle">Accede a los recursos del taller.</p>
+    </div>
     <div class="grid">
-
+      <!-- Card 1 -->
       <div class="card">
-        <div class="icon">&#127760;</div>
+        <div class="icon">🌐</div>
         <h3>Informe en vivo</h3>
         <p>Analisis automatico de las respuestas generado por n8n + LLM.</p>
-        <a href="https://n8n.gako.ai/webhook/ver-informe" target="_blank">Ver informe →</a>
+        <button class="card-btn" onclick="openModal('https://n8n.gako.ai/webhook/ver-informe','Informe en vivo',true)">Ver informe →</button>
       </div>
-
+      <!-- Card 2 -->
       <div class="card">
-        <div class="icon">&#129302;</div>
+        <div class="icon">🤖</div>
         <h3>Chatbot Wikipedia</h3>
         <p>Agente IA con memoria que busca en Wikipedia para responderte.</p>
-        <a href="./agente-wikipedia.html">Abrir chatbot →</a>
+        <button class="card-btn" onclick="openModal('./agente-wikipedia.html','Chatbot Wikipedia')">Abrir chatbot →</button>
       </div>
-
+      <!-- Card 3 -->
       <div class="card">
-        <div class="icon">&#128196;</div>
+        <div class="icon">📑</div>
         <h3>Presentacion</h3>
-        <p>Las diapositivas completas del taller en formato PDF.</p>
-        <a href="./taller-n8n.pdf" download>Descargar PDF →</a>
+        <p>Las diapositivas del taller.</p>
+        <button class="card-btn" onclick="openModal('./presentacion.html','Presentacion')">Ver slides →</button>
+        <a href="./taller-n8n.pdf" download class="card-link">Descargar PDF →</a>
       </div>
-
+      <!-- Card 4 -->
       <div class="card">
-        <div class="icon">&#128203;</div>
+        <div class="icon">📋</div>
         <h3>Cheatsheet n8n</h3>
-        <p>Referencia rapida de expresiones, nodos mas utiles, atajos y APIs de prueba.</p>
-        <a href="./cheatsheet.pdf" download>Descargar PDF →</a>
+        <p>Referencia rapida de expresiones, nodos y APIs de prueba.</p>
+        <a href="./cheatsheet.pdf" download class="card-btn">Descargar PDF →</a>
       </div>
-
     </div>
-  </div>
 
-  <!-- FLUJOS -->
-  <div class="divider">
-    <div class="section">
+    <div class="section-header">
       <h2>Flujos n8n para importar</h2>
       <p class="subtitle">Descarga los JSON e importalos en tu n8n desde Workflows → Import.</p>
-      <div class="flow-list">
-
-        <div class="flow-item">
-          <div class="num">01</div>
-          <div class="info">
-            <strong>Formulario de encuesta</strong>
-            <span>n8n Form Trigger → n8n Table → pantalla de confirmacion</span>
-          </div>
-          <div class="actions">
-            <a href="./01-formulario-encuesta.json" download>Descargar JSON</a>
-            <a href="https://n8n.gako.ai/workflow/ka2cmQNfg3MZDDBG" target="_blank" class="open-n8n">Abrir en n8n</a>
-          </div>
+    </div>
+    <div class="flow-list">
+      <div class="flow-item">
+        <div class="num">01</div>
+        <div class="info">
+          <strong>Formulario de encuesta</strong>
+          <span>n8n Form Trigger → n8n Table → pantalla de confirmacion</span>
         </div>
-
-        <div class="flow-item">
-          <div class="num">02</div>
-          <div class="info">
-            <strong>Generar informe HTML</strong>
-            <span>Webhook → n8n Table → Code → OpenAI → pagina HTML</span>
-          </div>
-          <div class="actions">
-            <a href="./02-generar-informe.json" download>Descargar JSON</a>
-            <a href="https://n8n.gako.ai/workflow/vcctyu70QWM6r958" target="_blank" class="open-n8n">Abrir en n8n</a>
-          </div>
+        <div class="actions">
+          <a href="./01-formulario-encuesta.json" download class="dl">Descargar JSON</a>
+          <a href="https://n8n.gako.ai/workflow/ka2cmQNfg3MZDDBG" target="_blank" class="n8n-link">Ver en n8n →</a>
         </div>
-
-        <div class="flow-item">
-          <div class="num">03</div>
-          <div class="info">
-            <strong>Agente IA con Wikipedia</strong>
-            <span>Webhook → AI Agent + Wikipedia + Memoria → respuesta</span>
-          </div>
-          <div class="actions">
-            <a href="./03-agente-wikipedia.json" download>Descargar JSON</a>
-            <a href="https://n8n.gako.ai/workflow/AJPKydWevVkVRpow" target="_blank" class="open-n8n">Abrir en n8n</a>
-          </div>
+      </div>
+      <div class="flow-item">
+        <div class="num">02</div>
+        <div class="info">
+          <strong>Generar informe HTML</strong>
+          <span>Webhook → n8n Table → Code → LLM → pagina HTML</span>
         </div>
-
+        <div class="actions">
+          <a href="./02-generar-informe.json" download class="dl">Descargar JSON</a>
+          <a href="https://n8n.gako.ai/workflow/vcctyu70QWM6r958" target="_blank" class="n8n-link">Ver en n8n →</a>
+        </div>
+      </div>
+      <div class="flow-item">
+        <div class="num">03</div>
+        <div class="info">
+          <strong>Agente IA con Wikipedia</strong>
+          <span>Webhook → AI Agent + Wikipedia + Memoria → respuesta</span>
+        </div>
+        <div class="actions">
+          <a href="./03-agente-wikipedia.json" download class="dl">Descargar JSON</a>
+          <a href="https://n8n.gako.ai/workflow/AJPKydWevVkVRpow" target="_blank" class="n8n-link">Ver en n8n →</a>
+        </div>
       </div>
     </div>
   </div>
+</section>
 
-  <!-- FLUJOS DEMO -->
-  <div class="section">
-    <h2>Ejemplos avanzados</h2>
-    <p class="subtitle">Flujos de referencia para ver hasta donde llega n8n. Listos para importar y explorar.</p>
+<!-- SECTION 3: EJEMPLOS AVANZADOS -->
+<section class="screen" id="section3">
+  <div class="section-wrap">
+    <div class="section-header">
+      <h2>Ejemplos avanzados</h2>
+      <p class="subtitle">Flujos de referencia para ver hasta donde llega n8n.</p>
+    </div>
     <div class="flow-list">
-
       <div class="flow-item demo">
         <div class="num">04</div>
         <div class="info">
-          <strong>Gmail AI Auto-Responder</strong>
+          <strong>Gmail AI Auto-responder</strong>
           <span>Gmail Trigger → IA decide si necesita respuesta → crea borrador automaticamente</span>
         </div>
         <div class="actions">
-          <a href="./demos/04-gmail-ai-autoresponder.json" download>Descargar JSON</a>
-          <a href="https://n8n.gako.ai/workflow/4SzCCSyD15qoGEAw" target="_blank" class="open-n8n">Abrir en n8n</a>
+          <a href="./demos/04-gmail-ai-autoresponder.json" download class="dl">Descargar JSON</a>
+          <a href="https://n8n.gako.ai/workflow/4SzCCSyD15qoGEAw" target="_blank" class="n8n-link">Ver en n8n →</a>
         </div>
       </div>
-
       <div class="flow-item demo">
         <div class="num">05</div>
         <div class="info">
-          <strong>Agente Telegram con IA y DALL-E</strong>
+          <strong>Telegram Agente IA</strong>
           <span>Bot Telegram con memoria → responde texto y genera imagenes con IA</span>
         </div>
         <div class="actions">
-          <a href="./demos/05-telegram-agente-ia.json" download>Descargar JSON</a>
-          <a href="https://n8n.gako.ai/workflow/UrZ2vFlDmExu1GXr" target="_blank" class="open-n8n">Abrir en n8n</a>
+          <a href="./demos/05-telegram-agente-ia.json" download class="dl">Descargar JSON</a>
+          <a href="https://n8n.gako.ai/workflow/UrZ2vFlDmExu1GXr" target="_blank" class="n8n-link">Ver en n8n →</a>
         </div>
       </div>
-
       <div class="flow-item demo">
         <div class="num">06</div>
         <div class="info">
-          <strong>Resumen de documentos Drive → Google Sheets</strong>
+          <strong>Resumen Documentos Drive a Sheets</strong>
           <span>Google Drive Trigger → OpenAI resume el documento → guarda en hoja de calculo</span>
         </div>
         <div class="actions">
-          <a href="./demos/06-resumen-documentos-drive-sheets.json" download>Descargar JSON</a>
-          <a href="https://n8n.gako.ai/workflow/edfsX3ll3hWPVnv3" target="_blank" class="open-n8n">Abrir en n8n</a>
+          <a href="./demos/06-resumen-documentos-drive-sheets.json" download class="dl">Descargar JSON</a>
+          <a href="https://n8n.gako.ai/workflow/edfsX3ll3hWPVnv3" target="_blank" class="n8n-link">Ver en n8n →</a>
         </div>
       </div>
-
       <div class="flow-item demo">
         <div class="num">07</div>
         <div class="info">
-          <strong>Extraccion de facturas PDF con IA</strong>
+          <strong>Extraccion de facturas PDF</strong>
           <span>Gmail con adjunto PDF → LlamaParse + OpenAI extrae datos → Google Sheets</span>
         </div>
         <div class="actions">
-          <a href="./demos/07-facturas-pdf-openai.json" download>Descargar JSON</a>
-          <a href="https://n8n.gako.ai/workflow/dQgYG74Er9DwuRtM" target="_blank" class="open-n8n">Abrir en n8n</a>
+          <a href="./demos/07-facturas-pdf-openai.json" download class="dl">Descargar JSON</a>
+          <a href="https://n8n.gako.ai/workflow/dQgYG74Er9DwuRtM" target="_blank" class="n8n-link">Ver en n8n →</a>
         </div>
       </div>
-
     </div>
-    <p class="source-ref">* Flujos seleccionados de <a href="https://github.com/enescingoz/awesome-n8n-templates" target="_blank">github.com/enescingoz/awesome-n8n-templates</a> — coleccion publica de templates n8n bajo licencia MIT.</p>
+    <p class="source-ref">* Flujos seleccionados de <a href="https://github.com/enescingoz/awesome-n8n-templates" target="_blank">github.com/enescingoz/awesome-n8n-templates</a> &mdash; coleccion publica de templates n8n bajo licencia MIT.</p>
   </div>
-
-  <!-- FOOTER -->
   <footer>
     Taller de Automatizacion con IA y n8n &mdash; <a href="https://gako.ai">Gako AI</a>
   </footer>
+</section>
 
+<!-- MODAL -->
+<div id="modal">
+  <div class="modal-box">
+    <div class="modal-header">
+      <span id="modal-title"></span>
+      <button class="modal-close" onclick="closeModal()">&#x2715; Cerrar</button>
+    </div>
+    <iframe id="modal-frame"></iframe>
+  </div>
+</div>
+
+<script>
+function openModal(src, title, fetchMode) {
+  const modal = document.getElementById('modal');
+  const frame = document.getElementById('modal-frame');
+  document.getElementById('modal-title').textContent = title;
+  if (fetchMode) {
+    frame.srcdoc = '<div style="font-family:Inter,sans-serif;display:flex;align-items:center;justify-content:center;height:100%;color:#666">Cargando informe...</div>';
+    fetch(src).then(r => r.text()).then(html => { frame.srcdoc = html; }).catch(() => { frame.srcdoc = '<div style="padding:40px;font-family:sans-serif">Error al cargar el informe.</div>'; });
+  } else {
+    frame.src = src;
+  }
+  modal.style.display = 'flex';
+}
+function closeModal() {
+  const modal = document.getElementById('modal');
+  const frame = document.getElementById('modal-frame');
+  modal.style.display = 'none';
+  frame.src = ''; frame.srcdoc = '';
+}
+document.getElementById('modal').addEventListener('click', function(e) { if (e.target === this) closeModal(); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+</script>
 </body>
 </html>

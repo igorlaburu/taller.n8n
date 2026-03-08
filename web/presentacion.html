@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Presentacion — Taller IA y n8n</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --red: #de2315;
+      --dark: #1a1a2e;
+      --mid: #0f3460;
+      --light-bg: #f5f7ff;
+      --border: #e2e8f0;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      overflow: hidden;
+      font-family: 'Inter', sans-serif;
+    }
+
+    /* ===== SLIDES ===== */
+    .slide {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 60px 80px;
+      opacity: 0;
+      pointer-events: none;
+      transform: translateX(100%);
+      transition: opacity .4s, transform .4s;
+    }
+    .slide.active {
+      opacity: 1;
+      pointer-events: all;
+      transform: translateX(0);
+    }
+
+    /* ===== SLIDE 1: HERO ===== */
+    #slide1 {
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 60%, #0f3460 100%);
+      text-align: center;
+      gap: 20px;
+    }
+    #slide1 img { display: block; margin: 0 auto; }
+    #slide1 .tag {
+      display: inline-block;
+      background: var(--red);
+      color: white;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      padding: 6px 18px;
+      border-radius: 999px;
+    }
+    #slide1 h1 {
+      font-size: clamp(32px, 5vw, 58px);
+      font-weight: 800;
+      color: white;
+      line-height: 1.15;
+    }
+    #slide1 h1 span { color: var(--red); }
+    #slide1 p {
+      color: #a8b2d8;
+      font-size: 18px;
+    }
+
+    /* ===== SLIDE 2: AGENDA ===== */
+    #slide2 {
+      background: white;
+      align-items: flex-start;
+      gap: 32px;
+    }
+    #slide2 h2 {
+      font-size: clamp(28px, 4vw, 44px);
+      font-weight: 800;
+      color: var(--mid);
+    }
+    #slide2 ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      width: 100%;
+      max-width: 700px;
+    }
+    #slide2 ul li {
+      font-size: clamp(15px, 2vw, 20px);
+      color: var(--dark);
+      font-weight: 600;
+      padding: 14px 20px;
+      border-left: 4px solid var(--red);
+      background: var(--light-bg);
+      border-radius: 0 8px 8px 0;
+    }
+
+    /* ===== SLIDE 3: QUE ES N8N ===== */
+    #slide3 {
+      background: var(--light-bg);
+      align-items: flex-start;
+      gap: 36px;
+    }
+    #slide3 h2 {
+      font-size: clamp(28px, 4vw, 44px);
+      font-weight: 800;
+      color: var(--dark);
+    }
+    .quote-highlight {
+      background: var(--dark);
+      color: white;
+      font-size: clamp(18px, 2.5vw, 28px);
+      font-weight: 700;
+      padding: 24px 32px;
+      border-radius: 12px;
+      border-left: 6px solid var(--red);
+      max-width: 760px;
+      line-height: 1.4;
+    }
+    #slide3 ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    #slide3 ul li {
+      font-size: clamp(15px, 1.8vw, 20px);
+      color: var(--dark);
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    #slide3 ul li::before {
+      content: '';
+      width: 10px;
+      height: 10px;
+      background: var(--red);
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    /* ===== SLIDE 4: CONCEPTOS CLAVE ===== */
+    #slide4 {
+      background: white;
+      align-items: flex-start;
+      gap: 36px;
+    }
+    #slide4 h2 {
+      font-size: clamp(28px, 4vw, 44px);
+      font-weight: 800;
+      color: var(--mid);
+    }
+    .concept-cards {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      width: 100%;
+    }
+    .concept-card {
+      background: var(--light-bg);
+      border: 2px solid var(--border);
+      border-radius: 16px;
+      padding: 32px 24px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      transition: border-color .2s, box-shadow .2s;
+    }
+    .concept-card:hover {
+      border-color: var(--red);
+      box-shadow: 0 4px 20px rgba(0,0,0,.08);
+    }
+    .concept-icon {
+      font-size: 40px;
+      line-height: 1;
+    }
+    .concept-card h3 {
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--dark);
+    }
+    .concept-card p {
+      font-size: 14px;
+      color: #555;
+      line-height: 1.6;
+    }
+
+    /* ===== SLIDE 5: DEMO ===== */
+    #slide5 {
+      background: var(--dark);
+      text-align: center;
+      gap: 28px;
+    }
+    #slide5 h2 {
+      font-size: clamp(32px, 5vw, 52px);
+      font-weight: 800;
+      color: white;
+    }
+    #slide5 .desc {
+      color: #a8b2d8;
+      font-size: clamp(15px, 2vw, 20px);
+      max-width: 600px;
+    }
+    .flow-viz {
+      display: flex;
+      align-items: center;
+      gap: 0;
+    }
+    .flow-box {
+      background: rgba(255,255,255,0.1);
+      border: 2px solid rgba(255,255,255,0.2);
+      color: white;
+      font-weight: 700;
+      font-size: clamp(13px, 1.5vw, 16px);
+      padding: 14px 24px;
+      border-radius: 10px;
+      white-space: nowrap;
+    }
+    .flow-arrow {
+      color: var(--red);
+      font-size: 24px;
+      font-weight: 800;
+      padding: 0 12px;
+    }
+    #slide5 .cta-btn {
+      display: inline-block;
+      background: var(--red);
+      color: white;
+      font-weight: 700;
+      font-size: 16px;
+      padding: 14px 32px;
+      border-radius: 8px;
+      text-decoration: none;
+      transition: opacity .2s;
+    }
+    #slide5 .cta-btn:hover { opacity: .85; }
+
+    /* ===== SLIDE 6: SIGUIENTES PASOS ===== */
+    #slide6 {
+      background: var(--light-bg);
+      align-items: flex-start;
+      gap: 36px;
+    }
+    #slide6 h2 {
+      font-size: clamp(28px, 4vw, 44px);
+      font-weight: 800;
+      color: var(--dark);
+    }
+    .next-steps {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      width: 100%;
+      max-width: 700px;
+    }
+    .next-step {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px 24px;
+    }
+    .next-step .step-icon {
+      font-size: 36px;
+      flex-shrink: 0;
+    }
+    .next-step span {
+      font-size: clamp(15px, 1.8vw, 18px);
+      font-weight: 600;
+      color: var(--dark);
+    }
+    .slide6-footer {
+      font-size: 14px;
+      color: #888;
+      font-weight: 600;
+    }
+    .slide6-footer a {
+      color: var(--red);
+      text-decoration: none;
+    }
+
+    /* ===== NAVIGATION ===== */
+    #nav {
+      position: fixed;
+      bottom: 32px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      z-index: 100;
+    }
+    .nav-btn {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: none;
+      cursor: pointer;
+      font-size: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: opacity .2s;
+    }
+    #btn-prev {
+      background: var(--dark);
+      color: white;
+    }
+    #btn-next {
+      background: var(--red);
+      color: white;
+    }
+    .nav-btn:hover { opacity: .8; }
+    #counter {
+      font-size: 14px;
+      color: #666;
+      font-family: 'Inter', sans-serif;
+      font-weight: 600;
+      min-width: 48px;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+<!-- SLIDE 1 -->
+<div class="slide active" id="slide1">
+  <img src="./6t.png" alt="Gako AI" height="60">
+  <div class="tag">Taller practico</div>
+  <h1>Automatizacion con <span>IA y n8n</span></h1>
+  <p>Gako AI &middot; 2026</p>
+</div>
+
+<!-- SLIDE 2 -->
+<div class="slide" id="slide2">
+  <h2>Agenda del taller</h2>
+  <ul>
+    <li>01 &middot; Que es n8n y por que importa</li>
+    <li>02 &middot; Conceptos clave: triggers, nodos, flujos</li>
+    <li>03 &middot; Tu primer flujo en 10 minutos</li>
+    <li>04 &middot; IA dentro de los flujos</li>
+    <li>05 &middot; Demo en vivo: agente con Wikipedia</li>
+    <li>06 &middot; Casos reales y siguientes pasos</li>
+  </ul>
+</div>
+
+<!-- SLIDE 3 -->
+<div class="slide" id="slide3">
+  <h2>Que es n8n?</h2>
+  <div class="quote-highlight">
+    "Un orquestador de automatizaciones de codigo abierto"
+  </div>
+  <ul>
+    <li>Conecta cualquier app o API</li>
+    <li>Logica condicional, bucles, transformacion de datos</li>
+    <li>IA integrada: GPT, Claude, Gemini...</li>
+  </ul>
+</div>
+
+<!-- SLIDE 4 -->
+<div class="slide" id="slide4">
+  <h2>Conceptos clave</h2>
+  <div class="concept-cards">
+    <div class="concept-card">
+      <div class="concept-icon">&#x26A1;</div>
+      <h3>Trigger</h3>
+      <p>Inicia el flujo &mdash; webhook, formulario, cron, evento</p>
+    </div>
+    <div class="concept-card">
+      <div class="concept-icon">&#x2B21;</div>
+      <h3>Nodo</h3>
+      <p>Cada paso &mdash; transforma, consulta, decide, envia</p>
+    </div>
+    <div class="concept-card">
+      <div class="concept-icon">&#x2192;</div>
+      <h3>Conexion</h3>
+      <p>Enlaza nodos &mdash; con condiciones, bucles o ramas</p>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 5 -->
+<div class="slide" id="slide5">
+  <h2>Demo en vivo</h2>
+  <p class="desc">Agente IA conectado a Wikipedia con memoria de conversacion</p>
+  <div class="flow-viz">
+    <div class="flow-box">Webhook</div>
+    <div class="flow-arrow">&#x2192;</div>
+    <div class="flow-box">AI Agent</div>
+    <div class="flow-arrow">&#x2192;</div>
+    <div class="flow-box">Wikipedia</div>
+    <div class="flow-arrow">&#x2192;</div>
+    <div class="flow-box">Respuesta</div>
+  </div>
+  <a class="cta-btn" href="https://taller.gako.ai" target="_blank">Probar ahora &rarr; taller.gako.ai</a>
+</div>
+
+<!-- SLIDE 6 -->
+<div class="slide" id="slide6">
+  <h2>Siguientes pasos</h2>
+  <div class="next-steps">
+    <div class="next-step">
+      <div class="step-icon">&#x1F4DA;</div>
+      <span>Practica con los flujos del taller</span>
+    </div>
+    <div class="next-step">
+      <div class="step-icon">&#x1F517;</div>
+      <span>Conecta tus propias herramientas</span>
+    </div>
+    <div class="next-step">
+      <div class="step-icon">&#x1F680;</div>
+      <span>Comparte lo que construyas</span>
+    </div>
+  </div>
+  <p class="slide6-footer">Recursos en <a href="https://taller.gako.ai" target="_blank">taller.gako.ai</a></p>
+</div>
+
+<!-- NAVIGATION -->
+<div id="nav">
+  <button class="nav-btn" id="btn-prev" onclick="go(current - 1)">&#x2190;</button>
+  <span id="counter">1 / 6</span>
+  <button class="nav-btn" id="btn-next" onclick="go(current + 1)">&#x2192;</button>
+</div>
+
+<script>
+  let current = 0;
+  const slides = document.querySelectorAll('.slide');
+  const total = slides.length;
+
+  function go(n) {
+    if (n < 0) n = 0;
+    if (n >= total) n = total - 1;
+    slides[current].classList.remove('active');
+    current = n;
+    slides[current].classList.add('active');
+    document.getElementById('counter').textContent = (current + 1) + ' / ' + total;
+  }
+
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'ArrowLeft') go(current - 1);
+    if (e.key === 'ArrowRight') go(current + 1);
+  });
+
+  // Initialize first slide
+  go(0);
+</script>
+</body>
+</html>
