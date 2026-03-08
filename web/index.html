@@ -393,7 +393,7 @@
         <div class="icon">🌐</div>
         <h3>Informe de resultados</h3>
         <p>Analisis automatico de las respuestas generado por n8n + LLM.</p>
-        <button class="card-btn" onclick="openModal('https://n8n.gako.ai/webhook/ver-informe','Informe de resultados',true)">Ver informe →</button>
+        <button class="card-btn" onclick="openModal('https://n8n.gako.ai/webhook/ver-informe','Informe de resultados')">Ver informe →</button>
       </div>
       <!-- Card 2 -->
       <div class="card">
@@ -533,18 +533,17 @@
 </div>
 
 <script>
-function openModal(src, title, fetchMode) {
+function openModal(src, title) {
   const modal = document.getElementById('modal');
   const frame = document.getElementById('modal-frame');
   document.getElementById('modal-title').textContent = title;
-  frame.removeAttribute('srcdoc');
   frame.removeAttribute('src');
-  if (fetchMode) {
-    frame.srcdoc = '<div style="font-family:Inter,sans-serif;display:flex;align-items:center;justify-content:center;height:100%;color:#666">Cargando informe...</div>';
-    fetch(src).then(r => r.text()).then(html => { frame.srcdoc = html; }).catch(() => { frame.srcdoc = '<div style="padding:40px;font-family:sans-serif">Error al cargar el informe.</div>'; });
-  } else {
-    frame.src = src;
-  }
+  const base = window.location.origin + '/';
+  frame.srcdoc = '<div style="font-family:Inter,sans-serif;display:flex;align-items:center;justify-content:center;height:100%;color:#666">Cargando...</div>';
+  fetch(src)
+    .then(r => r.text())
+    .then(html => { frame.srcdoc = html.replace('<head>', '<head><base href="' + base + '">'); })
+    .catch(() => { frame.srcdoc = '<div style="padding:40px;font-family:sans-serif">Error al cargar.</div>'; });
   modal.style.display = 'flex';
 }
 function closeModal() {
