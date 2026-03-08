@@ -188,7 +188,7 @@
     }
     .card .icon { font-size: 28px; margin-bottom: 10px; }
     .card h3 { font-size: 15px; color: var(--dark); margin-bottom: 6px; font-weight: 700; }
-    .card p { font-size: 13px; color: #666; line-height: 1.5; flex: 1; margin-bottom: 14px; }
+    .card p { font-size: 13px; color: #666; line-height: 1.5; flex: 1; margin-bottom: 12px; }
     .card-btn {
       display: block;
       background: var(--red);
@@ -206,6 +206,13 @@
       font-family: inherit;
     }
     .card-btn:hover { opacity: .85; }
+    .card-footer {
+      min-height: 62px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      gap: 6px;
+    }
     .card-link {
       display: block;
       color: #999;
@@ -309,9 +316,8 @@
       justify-content: center;
     }
     .modal-box {
-      position: relative;
-      width: min(860px, 90vw);
-      height: min(680px, 88vh);
+      position: absolute;
+      inset: 60px;
       border-radius: 12px;
       overflow: hidden;
       display: flex;
@@ -395,29 +401,37 @@
         <div class="icon">🌐</div>
         <h3>Informe de resultados</h3>
         <p>Analisis automatico de las respuestas generado por n8n + LLM.</p>
-        <button class="card-btn" onclick="openModal('https://n8n.gako.ai/webhook/ver-informe','Informe de resultados')">Ver informe →</button>
+        <div class="card-footer">
+          <button class="card-btn" onclick="openModal('https://n8n.gako.ai/webhook/ver-informe','Informe de resultados')">Ver informe →</button>
+        </div>
       </div>
       <!-- Card 2 -->
       <div class="card">
         <div class="icon">🤖</div>
         <h3>Chatbot Wikipedia</h3>
         <p>Agente IA con memoria que busca en Wikipedia para responderte.</p>
-        <button class="card-btn" onclick="openModal('./agente-wikipedia.html','Chatbot Wikipedia')">Abrir chatbot →</button>
+        <div class="card-footer">
+          <button class="card-btn" onclick="openModal('./agente-wikipedia.html','Chatbot Wikipedia')">Abrir chatbot →</button>
+        </div>
       </div>
       <!-- Card 3 -->
       <div class="card">
         <div class="icon">📑</div>
         <h3>Presentacion</h3>
         <p>Las diapositivas del taller.</p>
-        <button class="card-btn" onclick="openModal('./presentacion.html','Presentacion')">Ver slides →</button>
-        <a href="./taller-n8n.pdf" download class="card-link">Descargar PDF →</a>
+        <div class="card-footer">
+          <button class="card-btn" onclick="openModal('./presentacion.html','Presentacion')">Ver slides →</button>
+          <a href="./taller-n8n.pdf" download class="card-link">Descargar PDF →</a>
+        </div>
       </div>
       <!-- Card 4 -->
       <div class="card">
         <div class="icon">📋</div>
         <h3>Cheatsheet n8n</h3>
         <p>Referencia rapida de expresiones, nodos y APIs de prueba.</p>
-        <a href="./cheatsheet.pdf" download class="card-btn">Descargar PDF →</a>
+        <div class="card-footer">
+          <a href="./cheatsheet.pdf" download class="card-btn">Descargar PDF →</a>
+        </div>
       </div>
     </div>
 
