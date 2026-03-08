@@ -349,22 +349,6 @@ return [
       </table>
     </div>
 
-    <div class="section">
-      <h2>Probar webhooks con curl</h2>
-      <pre><code># GET simple
-curl https://TU-N8N/webhook-test/mi-flujo
-
-# POST con JSON
-curl -X POST https://TU-N8N/webhook-test/mi-flujo \
-  -H "Content-Type: application/json" \
-  -d '{"nombre": "Ana", "email": "ana@ejemplo.com"}'
-
-# POST con autenticación
-curl -X POST https://TU-N8N/webhook/mi-flujo \
-  -H "Content-Type: application/json" \
-  -H "Authorization: Bearer mi-token" \
-  -d '{"dato": "valor"}'</code></pre>
-    </div>
   </div>
 
   <!-- FULL WIDTH ROWS -->
@@ -380,6 +364,23 @@ curl -X POST https://TU-N8N/webhook/mi-flujo \
       <tr><td>IP Info</td><td><code>https://ipinfo.io/json</code></td><td>Info de tu IP</td></tr>
       <tr><td>Chuck Norris</td><td><code>https://api.chucknorris.io/jokes/random</code></td><td>Chistes aleatorios</td></tr>
     </table>
+  </div>
+
+  <div class="section full">
+    <h2>Probar webhooks con curl</h2>
+    <pre style="max-width:600px;margin:0 auto"><code># GET simple
+curl https://TU-N8N/webhook-test/mi-flujo
+
+# POST con JSON
+curl -X POST https://TU-N8N/webhook-test/mi-flujo \
+  -H "Content-Type: application/json" \
+  -d '{"nombre": "Ana", "email": "ana@ejemplo.com"}'
+
+# POST con autenticación
+curl -X POST https://TU-N8N/webhook/mi-flujo \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer mi-token" \
+  -d '{"dato": "valor"}'</code></pre>
   </div>
 
   <div class="section full">
