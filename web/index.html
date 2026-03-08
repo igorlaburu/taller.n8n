@@ -22,30 +22,9 @@
       min-height: 100vh;
     }
 
-    /* HEADER */
-    header {
-      background: var(--dark);
-      padding: 16px 40px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    header .logo {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      text-decoration: none;
-    }
-
-    header .logo img {
-      height: 45px;
-      width: auto;
-    }
-
     /* HERO SCREEN */
     .hero-screen {
-      height: calc(100vh - 77px);
+      height: 100vh;
       display: flex;
       flex-direction: column;
     }
@@ -56,11 +35,29 @@
       background: linear-gradient(135deg, var(--dark) 0%, #16213e 60%, var(--mid) 100%);
       color: white;
       padding: 40px;
-      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .hero-logo-wrap {
+      flex: 1;
+      display: flex;
+      align-items: center;
+    }
+
+    .hero-logo-wrap img {
+      height: 65px;
+      width: auto;
+    }
+
+    .hero-body {
+      flex: 1;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
+      text-align: center;
     }
 
     .hero .tag {
@@ -348,22 +345,23 @@
 </head>
 <body>
 
-  <header>
-    <a class="logo" href="https://gako.ai" target="_blank">
-      <img src="./6t.png" alt="Gako AI">
-    </a>
-  </header>
-
   <div class="hero-screen">
 
   <!-- HERO -->
   <section class="hero">
-    <div class="tag">Taller practico</div>
-    <h1>Automatizacion con <span>IA y n8n</span></h1>
-    <p>De la teoria a tu primer flujo en produccion. Todo el material del taller disponible aqui.</p>
-    <a class="cta" href="https://n8n.gako.ai/form/encuesta-taller" target="_blank">
-      Rellenar la encuesta
-    </a>
+    <div class="hero-logo-wrap">
+      <a href="https://gako.ai" target="_blank">
+        <img src="./6t.png" alt="Gako AI">
+      </a>
+    </div>
+    <div class="hero-body">
+      <div class="tag">Taller practico</div>
+      <h1>Automatizacion con <span>IA y n8n</span></h1>
+      <p>De la teoria a tu primer flujo en produccion. Todo el material del taller disponible aqui.</p>
+      <a class="cta" href="https://n8n.gako.ai/form/encuesta-taller" target="_blank">
+        Rellenar la encuesta
+      </a>
+    </div>
   </section>
 
   <!-- QR -->
@@ -532,7 +530,7 @@
       </div>
 
     </div>
-    <p class="source-ref">Flujos obtenidos de <a href="https://github.com/enescingoz/awesome-n8n-templates" target="_blank">github.com/enescingoz/awesome-n8n-templates</a> — coleccion publica de templates n8n bajo licencia MIT.</p>
+    <p class="source-ref">* Flujos seleccionados de <a href="https://github.com/enescingoz/awesome-n8n-templates" target="_blank">github.com/enescingoz/awesome-n8n-templates</a> — coleccion publica de templates n8n bajo licencia MIT.</p>
   </div>
 
   <!-- FOOTER -->
