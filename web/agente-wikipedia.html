@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Agente Wikipedia — Taller n8n</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --red: #de2315;
+      --dark: #1a1a2e;
+      --mid: #0f3460;
+      --light-bg: #f5f7ff;
+      --border: #e2e8f0;
+    }
+
+    body {
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      background: var(--light-bg);
+      color: var(--dark);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    header {
+      background: var(--dark);
+      padding: 14px 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    header .logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+    }
+
+    header .logo img { height: 38px; width: auto; }
+
+    header .back {
+      color: #8892b0;
+      font-size: 14px;
+      text-decoration: none;
+      transition: color .2s;
+    }
+
+    header .back:hover { color: white; }
+
+    .hero-bar {
+      background: linear-gradient(135deg, var(--dark) 0%, #16213e 60%, var(--mid) 100%);
+      color: white;
+      padding: 28px 40px;
+      text-align: center;
+    }
+
+    .hero-bar .tag {
+      display: inline-block;
+      background: var(--red);
+      color: white;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      padding: 3px 12px;
+      border-radius: 20px;
+      margin-bottom: 10px;
+    }
+
+    .hero-bar h1 {
+      font-size: clamp(20px, 3vw, 32px);
+      font-weight: 800;
+      margin-bottom: 6px;
+    }
+
+    .hero-bar p {
+      color: #a8b2d8;
+      font-size: 15px;
+    }
+
+    /* CHAT */
+    .chat-wrap {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      max-width: 780px;
+      width: 100%;
+      margin: 32px auto;
+      padding: 0 20px 24px;
+      gap: 16px;
+    }
+
+    .messages {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      min-height: 300px;
+    }
+
+    .msg {
+      display: flex;
+      gap: 10px;
+      animation: fadeIn .2s ease;
+    }
+
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; } }
+
+    .msg.user { flex-direction: row-reverse; }
+
+    .avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    .msg.bot .avatar { background: var(--mid); }
+    .msg.user .avatar { background: var(--red); }
+
+    .bubble {
+      max-width: 80%;
+      padding: 12px 16px;
+      border-radius: 16px;
+      font-size: 15px;
+      line-height: 1.6;
+    }
+
+    .msg.bot .bubble {
+      background: white;
+      border: 1px solid var(--border);
+      border-top-left-radius: 4px;
+    }
+
+    .msg.user .bubble {
+      background: var(--red);
+      color: white;
+      border-top-right-radius: 4px;
+    }
+
+    .bubble.thinking {
+      color: #999;
+      font-style: italic;
+    }
+
+    .bubble.thinking span {
+      display: inline-block;
+      animation: dots 1.2s infinite;
+    }
+
+    @keyframes dots {
+      0%, 100% { opacity: .3; }
+      50% { opacity: 1; }
+    }
+
+    /* INPUT */
+    .input-row {
+      display: flex;
+      gap: 10px;
+      background: white;
+      border: 1.5px solid var(--border);
+      border-radius: 12px;
+      padding: 10px 14px;
+      transition: border-color .2s;
+    }
+
+    .input-row:focus-within { border-color: var(--mid); }
+
+    .input-row input {
+      flex: 1;
+      border: none;
+      outline: none;
+      font-size: 15px;
+      font-family: inherit;
+      color: var(--dark);
+      background: transparent;
+    }
+
+    .input-row button {
+      background: var(--red);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      padding: 8px 18px;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: opacity .2s;
+      white-space: nowrap;
+    }
+
+    .input-row button:hover { opacity: .85; }
+    .input-row button:disabled { opacity: .4; cursor: not-allowed; }
+
+    .hint {
+      text-align: center;
+      font-size: 12px;
+      color: #aaa;
+      margin-top: 4px;
+    }
+
+    footer {
+      background: var(--dark);
+      color: #8892b0;
+      text-align: center;
+      padding: 20px 24px;
+      font-size: 13px;
+    }
+
+    footer a { color: var(--red); text-decoration: none; }
+  </style>
+</head>
+<body>
+
+  <header>
+    <a class="logo" href="https://gako.ai" target="_blank">
+      <img src="./6t.png" alt="Gako AI">
+    </a>
+    <a class="back" href="./index.html">← Volver al taller</a>
+  </header>
+
+  <div class="hero-bar">
+    <div class="tag">Flujo 03</div>
+    <h1>Agente IA con Wikipedia</h1>
+    <p>Pregunta lo que quieras — el agente busca en Wikipedia si lo necesita</p>
+  </div>
+
+  <div class="chat-wrap">
+    <div class="messages" id="messages">
+      <div class="msg bot">
+        <div class="avatar">🤖</div>
+        <div class="bubble">Hola! Soy un agente IA conectado a Wikipedia. Puedo responder preguntas sobre personas, lugares, eventos, conceptos... &iquest;Qu&eacute; quieres saber?</div>
+      </div>
+    </div>
+
+    <div>
+      <div class="input-row">
+        <input type="text" id="input" placeholder="Escribe tu pregunta..." autocomplete="off" />
+        <button id="send">Enviar</button>
+      </div>
+      <p class="hint">La conversaci&oacute;n tiene memoria — puedes hacer preguntas de seguimiento</p>
+    </div>
+  </div>
+
+  <footer>
+    Taller de Automatizacion con IA y n8n &mdash; <a href="https://gako.ai">Gako AI</a>
+  </footer>
+
+  <script>
+    const WEBHOOK = 'https://n8n.gako.ai/webhook/agente-wiki';
+    const sessionId = 'sess-' + Math.random().toString(36).slice(2, 10);
+
+    const messagesEl = document.getElementById('messages');
+    const inputEl = document.getElementById('input');
+    const sendBtn = document.getElementById('send');
+
+    function addMsg(text, type) {
+      const div = document.createElement('div');
+      div.className = `msg ${type}`;
+      const avatar = type === 'bot' ? '🤖' : '👤';
+      div.innerHTML = `<div class="avatar">${avatar}</div><div class="bubble">${text}</div>`;
+      messagesEl.appendChild(div);
+      messagesEl.scrollTop = messagesEl.scrollHeight;
+      return div;
+    }
+
+    function addThinking() {
+      const div = document.createElement('div');
+      div.className = 'msg bot';
+      div.innerHTML = `<div class="avatar">🤖</div><div class="bubble thinking"><span>Pensando</span><span>.</span><span>.</span><span>.</span></div>`;
+      messagesEl.appendChild(div);
+      messagesEl.scrollTop = messagesEl.scrollHeight;
+      return div;
+    }
+
+    async function send() {
+      const text = inputEl.value.trim();
+      if (!text) return;
+
+      inputEl.value = '';
+      sendBtn.disabled = true;
+      addMsg(text, 'user');
+      const thinking = addThinking();
+
+      try {
+        const res = await fetch(WEBHOOK, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ pregunta: text, sesion_id: sessionId })
+        });
+
+        const data = await res.json();
+        thinking.remove();
+        addMsg(data.respuesta || JSON.stringify(data), 'bot');
+      } catch (err) {
+        thinking.remove();
+        addMsg('Error al conectar con el agente. Inténtalo de nuevo.', 'bot');
+      }
+
+      sendBtn.disabled = false;
+      inputEl.focus();
+    }
+
+    sendBtn.addEventListener('click', send);
+    inputEl.addEventListener('keydown', e => { if (e.key === 'Enter') send(); });
+    inputEl.focus();
+  </script>
+
+</body>
+</html>
