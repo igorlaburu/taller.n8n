@@ -338,7 +338,7 @@
       align-items: center;
     }
     .modal-header span { font-weight: 600; font-size: 15px; }
-    .modal-close {
+    .modal-close, .modal-fullscreen {
       background: none;
       border: none;
       color: #8892b0;
@@ -346,8 +346,10 @@
       font-size: 14px;
       transition: color .2s;
       font-family: inherit;
+      padding: 0;
     }
-    .modal-close:hover { color: white; }
+    .modal-close:hover, .modal-fullscreen:hover { color: white; }
+    .modal-header-btns { display: flex; align-items: center; gap: 16px; }
     #modal-frame {
       flex: 1;
       min-height: 0;
@@ -545,7 +547,7 @@
           <h3>Presentacion</h3>
           <p>Las diapositivas del taller.</p>
           <div class="card-footer">
-            <button class="card-btn" onclick="openModal('./presentacion.html','Presentacion')">Ver slides →</button>
+            <button class="card-btn" onclick="openModal('./presentacion.html','Presentación',false,true)">Ver slides →</button>
           </div>
           <a href="./taller-n8n.pdf" download class="card-link">Descargar PDF →</a>
         </div>
@@ -672,18 +674,22 @@
   <div class="modal-box">
     <div class="modal-header">
       <span id="modal-title"></span>
-      <button class="modal-close" onclick="closeModal()">&#x2715; Cerrar</button>
+      <div class="modal-header-btns">
+        <button class="modal-fullscreen" onclick="enterFullscreen()" title="Pantalla completa">⛶ Pantalla completa</button>
+        <button class="modal-close" onclick="closeModal()">&#x2715; Cerrar</button>
+      </div>
     </div>
     <iframe id="modal-frame"></iframe>
   </div>
 </div>
 
 <script>
-function openModal(src, title, narrow) {
+function openModal(src, title, narrow, full) {
   const modal = document.getElementById('modal');
   const frame = document.getElementById('modal-frame');
   document.getElementById('modal-title').textContent = title;
-  modal.querySelector('.modal-box').style.inset = narrow ? '60px 18%' : '60px';
+  modal.querySelector('.modal-box').style.inset = full ? '0' : narrow ? '60px 18%' : '60px';
+  modal.querySelector('.modal-box').style.borderRadius = full ? '0' : '12px';
   frame.removeAttribute('src');
   const base = window.location.origin + '/';
   frame.srcdoc = '<div style="font-family:Inter,sans-serif;display:flex;align-items:center;justify-content:center;height:100%;color:#666">Cargando...</div>';
@@ -706,6 +712,13 @@ function openQR() {
   .url{font-size:42px;font-weight:800;color:#1a1a2e;letter-spacing:-1px;}
   </style></head><body><div class="wrap"><div class="qr">${qrSvg}</div><div class="url">taller.gako.ai</div></div></body></html>`;
   modal.style.display = 'flex';
+}
+function enterFullscreen() {
+  const el = document.getElementById('modal');
+  const fn = el.requestFullscreen || el.webkitRequestFullscreen || el.mozRequestFullScreen;
+  if (fn) fn.call(el).then(() => {
+    try { screen.orientation.lock('landscape').catch(() => {}); } catch(e) {}
+  }).catch(() => {});
 }
 function closeModal() {
   const modal = document.getElementById('modal');

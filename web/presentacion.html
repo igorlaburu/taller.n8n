@@ -3,460 +3,806 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Presentacion — Taller IA y n8n</title>
+  <title>Automatización con IA y n8n — Gako AI</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800;900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
   <style>
     :root {
       --red: #de2315;
-      --dark: #1a1a2e;
-      --mid: #0f3460;
-      --light-bg: #f5f7ff;
-      --border: #e2e8f0;
+      --dark: #111827;
+      --mid: #374151;
+      --muted: #6b7280;
+      --light: #f3f4f6;
+      --border: #e5e7eb;
+      --header-h: 60px;
     }
+
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
     html, body {
-      margin: 0;
-      padding: 0;
-      height: 100%;
+      width: 100%; height: 100%;
       overflow: hidden;
       font-family: 'Inter', sans-serif;
+      background: #fff;
+      color: var(--dark);
     }
 
-    /* ===== SLIDES ===== */
+    /* ===== HEADER ===== */
+    .site-header {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      height: var(--header-h);
+      background: #fff;
+      border-bottom: 3px solid var(--red);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 40px;
+      z-index: 200;
+    }
+    .site-header .slide-info {
+      font-size: clamp(13px, 1.1vw, 16px);
+      font-weight: 700;
+      color: var(--muted);
+      font-family: 'JetBrains Mono', monospace;
+      letter-spacing: 1px;
+    }
+    .site-header .slide-info span { color: var(--red); }
+    .site-header img { height: 43px; width: auto; display: block; }
+
+    /* ===== DECK ===== */
+    .deck { position: fixed; top: var(--header-h); left: 0; right: 0; bottom: 0; }
+
     .slide {
       position: absolute;
-      top: 0; left: 0;
-      width: 100vw;
-      height: 100vh;
-      display: flex;
+      inset: 0;
+      display: none;
       flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 60px 80px;
-      opacity: 0;
-      pointer-events: none;
-      transform: translateX(100%);
-      transition: opacity .4s, transform .4s;
+      padding: 6vh 8vw 5vh;
+      background: #fff;
+      overflow: hidden;
     }
-    .slide.active {
-      opacity: 1;
-      pointer-events: all;
-      transform: translateX(0);
-    }
+    .slide.active { display: flex; }
 
-    /* ===== SLIDE 1: HERO ===== */
-    #slide1 {
-      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 60%, #0f3460 100%);
-      text-align: center;
-      gap: 20px;
-    }
-    #slide1 img { display: block; margin: 0 auto; }
-    #slide1 .tag {
-      display: inline-block;
-      background: var(--red);
-      color: white;
-      font-size: 12px;
+    /* ===== SLIDE TAG ===== */
+    .slide-tag {
+      font-size: clamp(16px, 1.8vw, 24px);
       font-weight: 700;
-      letter-spacing: 1px;
+      letter-spacing: 3px;
       text-transform: uppercase;
-      padding: 6px 18px;
-      border-radius: 999px;
-    }
-    #slide1 h1 {
-      font-size: clamp(32px, 5vw, 58px);
-      font-weight: 800;
-      color: white;
-      line-height: 1.15;
-    }
-    #slide1 h1 span { color: var(--red); }
-    #slide1 p {
-      color: #a8b2d8;
-      font-size: 18px;
+      color: var(--red);
+      margin-bottom: 2vh;
     }
 
-    /* ===== SLIDE 2: AGENDA ===== */
-    #slide2 {
-      background: white;
-      align-items: flex-start;
-      gap: 32px;
-    }
-    #slide2 h2 {
-      font-size: clamp(28px, 4vw, 44px);
+    /* ===== TITLES ===== */
+    h2 {
+      font-size: clamp(30px, 3.8vw, 54px);
       font-weight: 800;
+      line-height: 1.1;
+      color: var(--dark);
+      margin-bottom: 3.5vh;
+    }
+    h2 span { color: var(--red); }
+
+    .subtitle {
+      font-size: clamp(20px, 2.4vw, 32px);
       color: var(--mid);
-    }
-    #slide2 ul {
-      list-style: none;
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-      width: 100%;
-      max-width: 700px;
-    }
-    #slide2 ul li {
-      font-size: clamp(15px, 2vw, 20px);
-      color: var(--dark);
-      font-weight: 600;
-      padding: 14px 20px;
-      border-left: 4px solid var(--red);
-      background: var(--light-bg);
-      border-radius: 0 8px 8px 0;
+      line-height: 1.5;
+      margin-bottom: 2vh;
     }
 
-    /* ===== SLIDE 3: QUE ES N8N ===== */
-    #slide3 {
-      background: var(--light-bg);
+    /* ===== CONTENT ===== */
+    .content { flex: 1; display: flex; flex-direction: column; justify-content: center; gap: min(3.5vh, 36px); }
+
+    /* ===== BULLETS ===== */
+    ul.bullets { list-style: none; display: flex; flex-direction: column; gap: min(2.2vh, 22px); }
+    ul.bullets li {
+      display: flex;
       align-items: flex-start;
-      gap: 36px;
+      gap: 18px;
+      font-size: clamp(20px, 2.6vw, 36px);
+      color: var(--mid);
+      line-height: 1.35;
     }
-    #slide3 h2 {
-      font-size: clamp(28px, 4vw, 44px);
-      font-weight: 800;
-      color: var(--dark);
+    ul.bullets li::before {
+      content: '▸';
+      color: var(--red);
+      font-size: clamp(14px, 1.6vw, 20px);
+      margin-top: 0.2em;
+      flex-shrink: 0;
     }
-    .quote-highlight {
-      background: var(--dark);
-      color: white;
-      font-size: clamp(18px, 2.5vw, 28px);
-      font-weight: 700;
-      padding: 24px 32px;
-      border-radius: 12px;
-      border-left: 6px solid var(--red);
-      max-width: 760px;
+    ul.bullets li strong { color: var(--dark); }
+
+    /* ===== CALLOUT ===== */
+    .callout {
+      border-left: 4px solid var(--red);
+      background: #fff5f5;
+      border-radius: 0 10px 10px 0;
+      padding: clamp(14px, 1.8vh, 24px) clamp(20px, 2vw, 32px);
+      font-size: clamp(18px, 2.2vw, 30px);
+      color: var(--red);
+      font-style: italic;
+      font-weight: 600;
       line-height: 1.4;
     }
-    #slide3 ul {
-      list-style: none;
-      display: flex;
-      flex-direction: column;
-      gap: 14px;
-    }
-    #slide3 ul li {
-      font-size: clamp(15px, 1.8vw, 20px);
-      color: var(--dark);
-      font-weight: 600;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-    #slide3 ul li::before {
-      content: '';
-      width: 10px;
-      height: 10px;
-      background: var(--red);
-      border-radius: 50%;
-      flex-shrink: 0;
-    }
 
-    /* ===== SLIDE 4: CONCEPTOS CLAVE ===== */
-    #slide4 {
-      background: white;
-      align-items: flex-start;
-      gap: 36px;
+    /* ===== TABLE ===== */
+    .tbl-wrap {
+      border: 2px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
     }
-    #slide4 h2 {
-      font-size: clamp(28px, 4vw, 44px);
-      font-weight: 800;
+    table { width: 100%; border-collapse: collapse; font-size: clamp(18px, 2.2vw, 28px); }
+    th {
+      background: var(--red);
+      color: white;
+      text-align: left;
+      padding: clamp(10px, 1.4vh, 18px) clamp(18px, 2vw, 28px);
+      font-size: clamp(12px, 1.1vw, 16px);
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+    }
+    td {
+      padding: clamp(12px, 1.5vh, 20px) clamp(18px, 2vw, 28px);
+      border-bottom: 1px solid var(--border);
       color: var(--mid);
     }
-    .concept-cards {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 24px;
-      width: 100%;
-    }
-    .concept-card {
-      background: var(--light-bg);
-      border: 2px solid var(--border);
-      border-radius: 16px;
-      padding: 32px 24px;
-      text-align: center;
+    tr:last-child td { border-bottom: none; }
+    tr:nth-child(even) td { background: var(--light); }
+    td strong { color: var(--dark); font-weight: 700; }
+
+    /* ===== TIMELINE ===== */
+    .timeline {
       display: flex;
       flex-direction: column;
-      align-items: center;
-      gap: 12px;
-      transition: border-color .2s, box-shadow .2s;
-    }
-    .concept-card:hover {
-      border-color: var(--red);
-      box-shadow: 0 4px 20px rgba(0,0,0,.08);
-    }
-    .concept-icon {
-      font-size: 40px;
-      line-height: 1;
-    }
-    .concept-card h3 {
-      font-size: 22px;
-      font-weight: 800;
-      color: var(--dark);
-    }
-    .concept-card p {
-      font-size: 14px;
-      color: #555;
-      line-height: 1.6;
-    }
-
-    /* ===== SLIDE 5: DEMO ===== */
-    #slide5 {
-      background: var(--dark);
-      text-align: center;
-      gap: 28px;
-    }
-    #slide5 h2 {
-      font-size: clamp(32px, 5vw, 52px);
-      font-weight: 800;
-      color: white;
-    }
-    #slide5 .desc {
-      color: #a8b2d8;
-      font-size: clamp(15px, 2vw, 20px);
-      max-width: 600px;
-    }
-    .flow-viz {
-      display: flex;
-      align-items: center;
+      padding-left: 44px;
+      position: relative;
       gap: 0;
     }
-    .flow-box {
-      background: rgba(255,255,255,0.1);
-      border: 2px solid rgba(255,255,255,0.2);
-      color: white;
-      font-weight: 700;
-      font-size: clamp(13px, 1.5vw, 16px);
-      padding: 14px 24px;
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 12px; top: 20px; bottom: 20px;
+      width: 3px;
+      background: linear-gradient(to bottom, var(--red) 70%, #f3f4f6);
+    }
+    .tl-item {
+      display: flex;
+      align-items: center;
+      gap: clamp(20px, 3vw, 48px);
+      padding: clamp(10px, 1.4vh, 18px) 0;
+      position: relative;
+    }
+    .tl-item::before {
+      content: '';
+      position: absolute;
+      left: -36px;
+      width: clamp(14px, 1.5vw, 20px);
+      height: clamp(14px, 1.5vw, 20px);
+      border-radius: 50%;
+      background: var(--red);
+      border: 3px solid #fff;
+      box-shadow: 0 0 0 3px var(--red);
+    }
+    .tl-item:last-child::before { background: var(--dark); box-shadow: 0 0 0 3px var(--dark); }
+    .tl-year {
+      font-size: clamp(26px, 3.5vw, 48px);
+      font-weight: 900;
+      color: var(--red);
+      min-width: clamp(64px, 6vw, 90px);
+    }
+    .tl-text {
+      font-size: clamp(18px, 2.3vw, 30px);
+      color: var(--mid);
+      line-height: 1.3;
+    }
+
+    /* ===== FLOW ===== */
+    .flow {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0;
+    }
+    .flow-node {
+      background: #fff;
+      border: 2.5px solid var(--mid);
       border-radius: 10px;
+      padding: clamp(12px, 1.6vh, 22px) clamp(20px, 2.8vw, 48px);
+      font-size: clamp(18px, 2.3vw, 32px);
+      font-weight: 700;
+      color: var(--dark);
       white-space: nowrap;
+      box-shadow: 0 2px 8px rgba(0,0,0,.08);
+    }
+    .flow-node.trigger {
+      background: var(--red);
+      color: white;
+      border-color: var(--red);
+      box-shadow: 0 4px 16px rgba(222,35,21,.3);
+    }
+    .flow-node.end {
+      background: #f0fdf4;
+      border-color: #22c55e;
+      color: #15803d;
+      box-shadow: 0 2px 8px rgba(34,197,94,.15);
     }
     .flow-arrow {
-      color: var(--red);
-      font-size: 24px;
-      font-weight: 800;
-      padding: 0 12px;
-    }
-    #slide5 .cta-btn {
-      display: inline-block;
-      background: var(--red);
-      color: white;
-      font-weight: 700;
-      font-size: 16px;
-      padding: 14px 32px;
-      border-radius: 8px;
-      text-decoration: none;
-      transition: opacity .2s;
-    }
-    #slide5 .cta-btn:hover { opacity: .85; }
-
-    /* ===== SLIDE 6: SIGUIENTES PASOS ===== */
-    #slide6 {
-      background: var(--light-bg);
-      align-items: flex-start;
-      gap: 36px;
-    }
-    #slide6 h2 {
-      font-size: clamp(28px, 4vw, 44px);
-      font-weight: 800;
-      color: var(--dark);
-    }
-    .next-steps {
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-      width: 100%;
-      max-width: 700px;
-    }
-    .next-step {
-      display: flex;
-      align-items: center;
-      gap: 20px;
-      background: white;
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 20px 24px;
-    }
-    .next-step .step-icon {
-      font-size: 36px;
+      color: var(--muted);
+      font-size: clamp(22px, 2.8vw, 36px);
+      padding: 0 clamp(10px, 1.4vw, 24px);
       flex-shrink: 0;
     }
-    .next-step span {
-      font-size: clamp(15px, 1.8vw, 18px);
-      font-weight: 600;
-      color: var(--dark);
+
+    /* ===== VS GRID ===== */
+    .vs-grid { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(16px, 2vw, 32px); }
+    .vs-box {
+      background: var(--light);
+      border: 2px solid var(--border);
+      border-radius: 14px;
+      padding: clamp(20px, 2.5vh, 36px) clamp(22px, 2.5vw, 40px);
     }
-    .slide6-footer {
-      font-size: 14px;
-      color: #888;
-      font-weight: 600;
-    }
-    .slide6-footer a {
+    .vs-box.highlight { border-color: var(--red); background: #fff5f5; }
+    .vs-box h3 {
+      font-size: clamp(14px, 1.5vw, 20px);
       color: var(--red);
-      text-decoration: none;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      font-weight: 800;
+      margin-bottom: clamp(10px, 1.4vh, 18px);
+    }
+    .vs-box ul { list-style: none; display: flex; flex-direction: column; gap: clamp(8px, 1vh, 14px); }
+    .vs-box ul li {
+      font-size: clamp(18px, 2.2vw, 28px);
+      color: var(--mid);
+      line-height: 1.35;
+      padding-left: 20px;
+      position: relative;
+    }
+    .vs-box ul li::before { content: '•'; color: var(--red); position: absolute; left: 0; }
+
+    /* ===== CODE ===== */
+    .code-block {
+      background: #f8fafc;
+      border: 2px solid var(--border);
+      border-radius: 10px;
+      padding: clamp(20px, 2.5vh, 36px) clamp(24px, 2.5vw, 40px);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: clamp(16px, 1.9vw, 26px);
+      color: var(--mid);
+      line-height: 2;
+      white-space: pre;
+    }
+    .code-block .r { color: var(--red); font-weight: 600; }
+    .code-block .g { color: #15803d; font-weight: 600; }
+    .code-block .m { color: var(--muted); }
+
+    /* ===== TWO COL ===== */
+    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(24px, 3vw, 56px); align-items: center; }
+
+    /* ===== PATTERN LABEL ===== */
+    .pattern-label {
+      font-size: clamp(11px, 1.1vw, 15px);
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: clamp(8px, 1vh, 14px);
     }
 
-    /* ===== NAVIGATION ===== */
-    #nav {
-      position: fixed;
-      bottom: 32px;
-      left: 50%;
-      transform: translateX(-50%);
+    /* ===== COVER ===== */
+    .slide-cover {
+      justify-content: center;
+      align-items: flex-start;
+      gap: 0;
+      padding: 8vh 10vw;
+    }
+    .cover-eyebrow {
+      font-size: clamp(13px, 1.4vw, 18px);
+      font-weight: 700;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: var(--red);
+      margin-bottom: 3vh;
+    }
+    .cover-title {
+      font-size: clamp(42px, 7vw, 96px);
+      font-weight: 900;
+      line-height: 1.05;
+      color: var(--dark);
+      margin-bottom: 4vh;
+    }
+    .cover-title span { color: var(--red); }
+    .cover-sub {
+      font-size: clamp(18px, 2.2vw, 30px);
+      color: var(--muted);
+      font-weight: 400;
+      border-top: 3px solid var(--red);
+      padding-top: 2.5vh;
+      max-width: 60vw;
+    }
+
+    /* ===== INDEX ===== */
+    .index-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: clamp(12px, 1.5vh, 20px) clamp(32px, 4vw, 60px);
+    }
+    .index-item {
       display: flex;
+      align-items: baseline;
+      gap: 14px;
+      font-size: clamp(18px, 2.2vw, 28px);
+      color: var(--mid);
+      line-height: 1.35;
+    }
+    .index-num {
+      font-size: clamp(12px, 1.1vw, 16px);
+      font-weight: 800;
+      color: var(--red);
+      font-family: 'JetBrains Mono', monospace;
+      min-width: 28px;
+    }
+
+    /* ===== THANKS ===== */
+    .slide-thanks {
+      justify-content: center;
+      align-items: flex-start;
+      padding: 8vh 10vw;
+    }
+    .thanks-title {
+      font-size: clamp(64px, 11vw, 140px);
+      font-weight: 900;
+      color: var(--red);
+      line-height: 1;
+      margin-bottom: 4vh;
+    }
+    .thanks-sub {
+      font-size: clamp(20px, 2.5vw, 34px);
+      color: var(--mid);
+      margin-bottom: 1.5vh;
+    }
+    .thanks-url {
+      font-size: clamp(22px, 2.8vw, 38px);
+      font-weight: 800;
+      color: var(--dark);
+    }
+    .thanks-url span { color: var(--red); }
+    .thanks-link {
+      font-size: clamp(16px, 2vw, 28px);
+      color: var(--mid);
+      text-decoration: none;
+      font-weight: 500;
+      transition: color .15s;
+    }
+    .thanks-link:hover { color: var(--red); }
+
+    /* ===== PATTERNS TABLE (slide 15) ===== */
+    .patterns-table {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr auto 1fr;
       align-items: center;
-      gap: 20px;
-      z-index: 100;
+      row-gap: min(1.8vh, 18px);
+      width: 100%;
+    }
+    .patterns-table .pattern-label {
+      grid-column: 1 / -1;
+      margin-top: min(3vh, 28px);
+    }
+    .patterns-table .pattern-label:first-child { margin-top: 0; }
+    .patterns-table .flow-node { width: 100%; text-align: center; }
+    .patterns-table .flow-arrow { text-align: center; }
+
+    /* ===== PROGRESS ===== */
+    .progress {
+      position: fixed;
+      bottom: 0; left: 0; right: 0;
+      height: 4px;
+      background: var(--border);
+      z-index: 200;
+    }
+    .progress-bar { height: 100%; background: var(--red); transition: width .3s ease; }
+
+    /* ===== NAV ===== */
+    .nav {
+      position: fixed;
+      bottom: 18px; right: 28px;
+      display: flex; align-items: center; gap: 10px;
+      z-index: 200;
     }
     .nav-btn {
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      border: none;
+      background: white;
+      border: 2px solid var(--border);
+      color: var(--muted);
+      width: 40px; height: 40px;
+      border-radius: 8px;
       cursor: pointer;
-      font-size: 18px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: opacity .2s;
+      font-size: 16px;
+      display: flex; align-items: center; justify-content: center;
+      transition: all .15s;
+      box-shadow: 0 2px 6px rgba(0,0,0,.1);
     }
-    #btn-prev {
-      background: var(--dark);
-      color: white;
-    }
-    #btn-next {
-      background: var(--red);
-      color: white;
-    }
-    .nav-btn:hover { opacity: .8; }
-    #counter {
-      font-size: 14px;
-      color: #666;
-      font-family: 'Inter', sans-serif;
-      font-weight: 600;
-      min-width: 48px;
-      text-align: center;
-    }
+    .nav-btn:hover { background: var(--red); color: white; border-color: var(--red); }
+    .slide-counter { font-size: 13px; color: var(--muted); font-family: 'JetBrains Mono', monospace; min-width: 52px; text-align: center; }
   </style>
 </head>
 <body>
 
-<!-- SLIDE 1 -->
-<div class="slide active" id="slide1">
-  <img src="./6t.png" alt="Gako AI" height="60">
-  <div class="tag">Taller practico</div>
-  <h1>Automatizacion con <span>IA y n8n</span></h1>
-  <p>Gako AI &middot; 2026</p>
-</div>
+<!-- FIXED HEADER -->
+<header class="site-header">
+  <div class="slide-info" id="headerInfo"><span>01</span> / 15</div>
+  <a href="https://gako.ai" target="_blank"><img src="./1t.png" alt="Gako AI"></a>
+</header>
 
-<!-- SLIDE 2 -->
-<div class="slide" id="slide2">
-  <h2>Agenda del taller</h2>
-  <ul>
-    <li>01 &middot; Que es n8n y por que importa</li>
-    <li>02 &middot; Conceptos clave: triggers, nodos, flujos</li>
-    <li>03 &middot; Tu primer flujo en 10 minutos</li>
-    <li>04 &middot; IA dentro de los flujos</li>
-    <li>05 &middot; Demo en vivo: agente con Wikipedia</li>
-    <li>06 &middot; Casos reales y siguientes pasos</li>
-  </ul>
-</div>
+<div class="deck" id="deck">
 
-<!-- SLIDE 3 -->
-<div class="slide" id="slide3">
-  <h2>Que es n8n?</h2>
-  <div class="quote-highlight">
-    "Un orquestador de automatizaciones de codigo abierto"
+  <!-- 00 PORTADA -->
+  <div class="slide slide-cover active">
+    <div class="cover-eyebrow">Taller práctico · Gako AI</div>
+    <h1 class="cover-title">Automatización<br>con <span>IA</span> y <span>n8n</span></h1>
+    <p class="cover-sub">De cero a tu primer flujo automatizado</p>
   </div>
-  <ul>
-    <li>Conecta cualquier app o API</li>
-    <li>Logica condicional, bucles, transformacion de datos</li>
-    <li>IA integrada: GPT, Claude, Gemini...</li>
-  </ul>
-</div>
 
-<!-- SLIDE 4 -->
-<div class="slide" id="slide4">
-  <h2>Conceptos clave</h2>
-  <div class="concept-cards">
-    <div class="concept-card">
-      <div class="concept-icon">&#x26A1;</div>
-      <h3>Trigger</h3>
-      <p>Inicia el flujo &mdash; webhook, formulario, cron, evento</p>
-    </div>
-    <div class="concept-card">
-      <div class="concept-icon">&#x2B21;</div>
-      <h3>Nodo</h3>
-      <p>Cada paso &mdash; transforma, consulta, decide, envia</p>
-    </div>
-    <div class="concept-card">
-      <div class="concept-icon">&#x2192;</div>
-      <h3>Conexion</h3>
-      <p>Enlaza nodos &mdash; con condiciones, bucles o ramas</p>
+  <!-- 01 ÍNDICE -->
+  <div class="slide">
+    <div class="slide-tag">Contenidos</div>
+    <h2>Qué vamos a <span>ver hoy</span></h2>
+    <div class="content">
+      <div class="index-grid">
+        <div class="index-item"><span class="index-num">01</span>Historia de la IA</div>
+        <div class="index-item"><span class="index-num">08</span>Demo en vivo</div>
+        <div class="index-item"><span class="index-num">02</span>Qué es un LLM</div>
+        <div class="index-item"><span class="index-num">09</span>Qué es n8n</div>
+        <div class="index-item"><span class="index-num">03</span>Capacidades</div>
+        <div class="index-item"><span class="index-num">10</span>El canvas</div>
+        <div class="index-item"><span class="index-num">04</span>Agentes IA</div>
+        <div class="index-item"><span class="index-num">11</span>Triggers</div>
+        <div class="index-item"><span class="index-num">05</span>Limitaciones</div>
+        <div class="index-item"><span class="index-num">12</span>Nodos</div>
+        <div class="index-item"><span class="index-num">06</span>Aplicaciones reales</div>
+        <div class="index-item"><span class="index-num">13</span>Items JSON</div>
+        <div class="index-item"><span class="index-num">07</span>Expectativas</div>
+        <div class="index-item"><span class="index-num">14</span>Expresiones</div>
+      </div>
     </div>
   </div>
-</div>
 
-<!-- SLIDE 5 -->
-<div class="slide" id="slide5">
-  <h2>Demo en vivo</h2>
-  <p class="desc">Agente IA conectado a Wikipedia con memoria de conversacion</p>
-  <div class="flow-viz">
-    <div class="flow-box">Webhook</div>
-    <div class="flow-arrow">&#x2192;</div>
-    <div class="flow-box">AI Agent</div>
-    <div class="flow-arrow">&#x2192;</div>
-    <div class="flow-box">Wikipedia</div>
-    <div class="flow-arrow">&#x2192;</div>
-    <div class="flow-box">Respuesta</div>
-  </div>
-  <a class="cta-btn" href="https://taller.gako.ai" target="_blank">Probar ahora &rarr; taller.gako.ai</a>
-</div>
-
-<!-- SLIDE 6 -->
-<div class="slide" id="slide6">
-  <h2>Siguientes pasos</h2>
-  <div class="next-steps">
-    <div class="next-step">
-      <div class="step-icon">&#x1F4DA;</div>
-      <span>Practica con los flujos del taller</span>
-    </div>
-    <div class="next-step">
-      <div class="step-icon">&#x1F517;</div>
-      <span>Conecta tus propias herramientas</span>
-    </div>
-    <div class="next-step">
-      <div class="step-icon">&#x1F680;</div>
-      <span>Comparte lo que construyas</span>
+  <!-- 02 HISTORIA IA -->
+  <div class="slide">
+    <div class="slide-tag">Historia de la IA</div>
+    <h2>La IA no es nueva.<br>Lo que <span>cambió</span> es el ritmo.</h2>
+    <div class="content">
+      <div class="timeline">
+        <div class="tl-item"><span class="tl-year">1950</span><span class="tl-text">Alan Turing: ¿pueden pensar las máquinas?</span></div>
+        <div class="tl-item"><span class="tl-year">1956</span><span class="tl-text">Nace el término "Inteligencia Artificial"</span></div>
+        <div class="tl-item"><span class="tl-year">2017</span><span class="tl-text">Transformers, la arquitectura que lo cambió todo</span></div>
+        <div class="tl-item"><span class="tl-year">2022</span><span class="tl-text">ChatGPT, 100 millones de usuarios en 2 meses</span></div>
+        <div class="tl-item"><span class="tl-year">2026</span><span class="tl-text">IA integrada en flujos de trabajo reales</span></div>
+      </div>
+      <div class="callout">El ritmo se ha multiplicado por 10 en 3 años</div>
     </div>
   </div>
-  <p class="slide6-footer">Recursos en <a href="https://taller.gako.ai" target="_blank">taller.gako.ai</a></p>
-</div>
 
-<!-- NAVIGATION -->
-<div id="nav">
-  <button class="nav-btn" id="btn-prev" onclick="go(current - 1)">&#x2190;</button>
-  <span id="counter">1 / 6</span>
-  <button class="nav-btn" id="btn-next" onclick="go(current + 1)">&#x2192;</button>
+  <!-- 02 QUÉ ES UN LLM -->
+  <div class="slide">
+    <div class="slide-tag">Fundamentos</div>
+    <h2>Modelo de Lenguaje <span>(LLM)</span></h2>
+    <div class="content">
+      <p class="subtitle">Red neuronal que predice la siguiente palabra.<br>Aprende a razonar, escribir, programar.</p>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>Modelo</th><th>Empresa</th><th>Característica</th></tr></thead>
+          <tbody>
+            <tr><td><strong>GPT-4o</strong></td><td>OpenAI</td><td>Multimodal, muy popular</td></tr>
+            <tr><td><strong>Claude 4</strong></td><td>Anthropic</td><td>Razonamiento y código</td></tr>
+            <tr><td><strong>Llama 3</strong></td><td>Meta</td><td>Open source, self-hosted</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- 03 QUÉ PUEDE HACER -->
+  <div class="slide">
+    <div class="slide-tag">Capacidades</div>
+    <h2>Qué puede hacer <span>un LLM</span></h2>
+    <div class="content">
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>Tarea</th><th>Ejemplo práctico</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Redactar</strong></td><td>Emails, informes, propuestas comerciales</td></tr>
+            <tr><td><strong>Resumir</strong></td><td>Documentos largos en 5 puntos clave</td></tr>
+            <tr><td><strong>Extraer</strong></td><td>Número de factura de un PDF</td></tr>
+            <tr><td><strong>Programar</strong></td><td>Generar y explicar código</td></tr>
+            <tr><td><strong>Analizar</strong></td><td>Sentimiento, categorías, intención</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- 04 AGENTES IA -->
+  <div class="slide">
+    <div class="slide-tag">Agentes IA</div>
+    <h2>LLM vs. <span>Agente IA</span></h2>
+    <div class="content">
+      <div class="vs-grid">
+        <div class="vs-box">
+          <h3>LLM</h3>
+          <ul>
+            <li>Pregunta, respuesta</li>
+            <li>Responde una sola vez</li>
+            <li>Sin acceso a herramientas</li>
+          </ul>
+        </div>
+        <div class="vs-box highlight">
+          <h3>Agente IA</h3>
+          <ul>
+            <li>Planifica varios pasos</li>
+            <li>Usa herramientas externas</li>
+            <li>Toma decisiones y actúa</li>
+          </ul>
+        </div>
+      </div>
+      <div class="callout">"Busca 3 informes de ventas y resúmelos" . Drive . Resume . Entrega</div>
+    </div>
+  </div>
+
+  <!-- 05 LIMITACIONES -->
+  <div class="slide">
+    <div class="slide-tag">Limitaciones</div>
+    <h2>Limitaciones <span>reales</span></h2>
+    <div class="content">
+      <ul class="bullets">
+        <li><strong>Alucinaciones:</strong> inventa con confianza</li>
+        <li><strong>Contexto limitado:</strong> no recuerda conversaciones largas</li>
+        <li><strong>Sin memoria nativa:</strong> hay que construirla</li>
+        <li><strong>Coste por token:</strong> escala con el uso</li>
+        <li><strong>Sesgo de entrenamiento:</strong> refleja los datos con que aprendió</li>
+      </ul>
+      <div class="callout">Supervisión humana, clave en decisiones importantes</div>
+    </div>
+  </div>
+
+  <!-- 06 APLICACIONES REALES -->
+  <div class="slide">
+    <div class="slide-tag">Aplicaciones</div>
+    <h2>Ya es realidad <span>en empresas</span></h2>
+    <div class="content">
+      <ul class="bullets">
+        <li>Chatbot de atención al cliente 24/7</li>
+        <li>Criba y clasificación automática de CVs</li>
+        <li>Revisión de contratos y detección de cláusulas</li>
+        <li>Extracción de datos de facturas y albaranes</li>
+        <li>Resumen de reuniones y llamadas grabadas</li>
+      </ul>
+      <div class="callout"><strong>RAG:</strong> la IA responde usando tu documentación privada</div>
+    </div>
+  </div>
+
+  <!-- 07 EXPECTATIVAS -->
+  <div class="slide">
+    <div class="slide-tag">Expectativas</div>
+    <h2>Qué <span>esperar</span></h2>
+    <div class="content">
+      <ul class="bullets">
+        <li>No perfecto desde el día 1, se ajusta</li>
+        <li>Necesita datos de calidad</li>
+        <li>El 20% de casos raros consume el 80% del esfuerzo</li>
+        <li>Mayor valor en procesos de alto volumen</li>
+        <li>Supervisión humana en decisiones críticas</li>
+      </ul>
+      <div class="callout">No solo "¿puede la IA?" sino "¿tiene sentido automatizarlo?"</div>
+    </div>
+  </div>
+
+  <!-- 08 DEMO EN VIVO -->
+  <div class="slide">
+    <div class="slide-tag">Demo en vivo</div>
+    <h2>Tu encuesta, <span>automatizada</span></h2>
+    <div class="content" style="justify-content:space-between;">
+      <div class="flow" style="justify-content:center; flex-wrap:nowrap;">
+        <div class="flow-node trigger">📱 Escaneas QR</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node">Form Trigger</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node">n8n Table</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node end">✓ Gracias</div>
+      </div>
+      <div class="callout">Nadie procesó nada a mano</div>
+    </div>
+  </div>
+
+  <!-- 09 QUÉ ES N8N -->
+  <div class="slide">
+    <div class="slide-tag">n8n</div>
+    <h2><span>n8n:</span> Automatización visual.</h2>
+    <div class="content">
+      <div class="two-col">
+        <ul class="bullets">
+          <li>400 integraciones listas</li>
+          <li>Arrastrar y soltar</li>
+          <li>Self-hosted o cloud</li>
+          <li>Sin límite de operaciones</li>
+        </ul>
+        <div class="vs-box highlight">
+          <h3>Por qué n8n</h3>
+          <ul>
+            <li>Datos en tu servidor</li>
+            <li>Cualquier API con HTTP Request</li>
+            <li>Open source</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 10 CANVAS N8N -->
+  <div class="slide">
+    <div class="slide-tag">n8n</div>
+    <h2>El canvas de <span>n8n</span></h2>
+    <div class="content" style="justify-content:space-between;">
+      <div class="flow" style="justify-content:center; flex-wrap:nowrap; margin:auto 0;">
+        <div class="flow-node trigger">Trigger</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node">Nodo A</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node">Nodo B</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node end">End</div>
+      </div>
+      <ul class="bullets">
+        <li><strong>Trigger:</strong> inicia el flujo, uno por flujo</li>
+        <li><strong>Nodos:</strong> cada paso del proceso</li>
+        <li><strong>Active ON:</strong> producción real, 24/7</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 11 TRIGGERS -->
+  <div class="slide">
+    <div class="slide-tag">n8n</div>
+    <h2>Triggers <span>comunes</span></h2>
+    <div class="content" style="justify-content:space-evenly;">
+      <ul class="bullets">
+        <li><strong>Webhook:</strong> petición HTTP entrante</li>
+        <li><strong>Form n8n:</strong> formulario nativo</li>
+        <li><strong>Schedule:</strong> cron, cada X tiempo</li>
+        <li><strong>Email recibido:</strong> Gmail, Outlook</li>
+        <li><strong>Manual:</strong> para pruebas</li>
+        <li><strong>App events:</strong> Gmail, Slack, Notion, etc.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 12 NODOS -->
+  <div class="slide">
+    <div class="slide-tag">n8n</div>
+    <h2>Tipos de <span>nodos</span></h2>
+    <div class="content">
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>Categoría</th><th>Ejemplos</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Datos</strong></td><td>Set, Code, Table</td></tr>
+            <tr><td><strong>Flujo</strong></td><td>IF, Switch, Merge</td></tr>
+            <tr><td><strong>APIs</strong></td><td>HTTP Request</td></tr>
+            <tr><td><strong>IA</strong></td><td>OpenAI, AI Agent, LLM Chain</td></tr>
+            <tr><td><strong>Archivos</strong></td><td>PDF extract, Google Drive</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- 13 DATOS JSON -->
+  <div class="slide">
+    <div class="slide-tag">n8n</div>
+    <h2>Los datos son <span>items JSON</span></h2>
+    <div class="content" style="justify-content:space-between;">
+      <div class="code-block">[
+  { <span class="r">"nombre"</span>: <span class="g">"Ana"</span>,  <span class="r">"rol"</span>: <span class="g">"Dir. Ops"</span>  },
+  { <span class="r">"nombre"</span>: <span class="g">"Luis"</span>, <span class="r">"rol"</span>: <span class="g">"Técnico IT"</span> }
+]</div>
+      <div class="callout">Cada item viaja de nodo en nodo a través del flujo</div>
+    </div>
+  </div>
+
+  <!-- 14 EXPRESIONES -->
+  <div class="slide">
+    <div class="slide-tag">n8n</div>
+    <h2><span>{{ expresiones }}</span></h2>
+    <div class="content">
+      <div class="code-block"><span class="m">// Valor del item actual</span>
+<span class="r">{{ $json.nombre }}</span>                  <span class="m">→  "Ana"</span>
+
+<span class="m">// Fecha y hora</span>
+<span class="r">{{ $now }}</span>                        <span class="m">→  "08/03/2026"</span>
+
+<span class="m">// Dato de otro nodo</span>
+<span class="r">{{ $('NodoX').item.json.campo }}</span>   <span class="m">→  valor anterior</span></div>
+      <div class="callout">Datos dinámicos en cualquier campo de cualquier nodo</div>
+    </div>
+  </div>
+
+  <!-- 15 PATRONES EMPRESA -->
+  <div class="slide">
+    <div class="slide-tag">Patrones</div>
+    <h2>Patrones de <span>automatización</span></h2>
+    <div class="content" style="justify-content:center;">
+      <div class="patterns-table">
+        <p class="pattern-label">1. Captura y almacenamiento</p>
+        <div class="flow-node trigger">Captura</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node">Enriquece</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node end">Almacena</div>
+
+        <p class="pattern-label">2. Evento y notificación</p>
+        <div class="flow-node trigger">Evento</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node">Analiza</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node end">Notifica</div>
+
+        <p class="pattern-label">3. Informe programado</p>
+        <div class="flow-node trigger">Programado</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node">Agrega</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node end">Informa</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 18 GRACIAS -->
+  <div class="slide slide-thanks">
+    <div class="thanks-title">Gracias.</div>
+    <p class="thanks-sub">Preguntas, proyectos, colaboraciones:</p>
+    <p class="thanks-url">gako<span>.ai</span></p>
+    <div style="display:flex;flex-direction:column;gap:clamp(8px,1.2vh,16px);margin-top:3vh;">
+      <a href="https://www.linkedin.com/in/laburu" target="_blank" class="thanks-link">linkedin.com/in/laburu</a>
+      <a href="mailto:igor@gako.ai" class="thanks-link">igor@gako.ai</a>
+      <a href="https://gako.ai/?contacto=1" target="_blank" class="thanks-link">gako.ai/contacto</a>
+    </div>
+  </div>
+
+</div><!-- /deck -->
+
+<div class="progress"><div class="progress-bar" id="progressBar"></div></div>
+<div class="nav">
+  <button class="nav-btn" id="prevBtn">←</button>
+  <span class="slide-counter" id="counter"></span>
+  <button class="nav-btn" id="nextBtn">→</button>
 </div>
 
 <script>
-  let current = 0;
-  const slides = document.querySelectorAll('.slide');
+  const slides = Array.from(document.querySelectorAll('.slide'));
   const total = slides.length;
+  let cur = 0;
 
   function go(n) {
-    if (n < 0) n = 0;
-    if (n >= total) n = total - 1;
-    slides[current].classList.remove('active');
-    current = n;
-    slides[current].classList.add('active');
-    document.getElementById('counter').textContent = (current + 1) + ' / ' + total;
+    slides[cur].classList.remove('active');
+    cur = (n + total) % total;
+    slides[cur].classList.add('active');
+    const num = String(cur + 1).padStart(2, '0');
+    document.getElementById('counter').textContent = (cur + 1) + ' / ' + total;
+    document.getElementById('headerInfo').innerHTML = '<span>' + num + '</span> / ' + total;
+    document.getElementById('progressBar').style.width = ((cur + 1) / total * 100) + '%';
   }
 
-  document.addEventListener('keydown', function(e) {
-    if (e.key === 'ArrowLeft') go(current - 1);
-    if (e.key === 'ArrowRight') go(current + 1);
+  document.getElementById('nextBtn').onclick = () => go(cur + 1);
+  document.getElementById('prevBtn').onclick = () => go(cur - 1);
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') go(cur + 1);
+    if (e.key === 'ArrowLeft'  || e.key === 'ArrowUp') go(cur - 1);
   });
 
-  // Initialize first slide
   go(0);
 </script>
 </body>
