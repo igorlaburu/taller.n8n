@@ -407,6 +407,10 @@
       z-index: 200;
     }
     .progress-bar { height: 100%; background: var(--red); transition: width .3s ease; }
+    body.on-cover .site-header { display: none; }
+    body.on-cover .progress { display: none; }
+    body.on-cover .nav { display: none; }
+    body.on-cover .deck { top: 0; }
 
     /* ===== NAV ===== */
     .nav {
@@ -444,10 +448,8 @@
   <!-- 00 PORTADA -->
   <div class="slide slide-cover active">
     <div class="cover-eyebrow">Taller práctico · Gako AI</div>
-    <div style="display:flex; align-items:center; gap:5vw;">
-      <h1 class="cover-title" style="margin-bottom:0;">Automatización<br>con <span>IA</span> y <span>n8n</span></h1>
-      <img src="./1t.png" alt="Gako AI" style="height:clamp(80px,12vw,160px); width:auto; flex-shrink:0;">
-    </div>
+    <h1 class="cover-title">Automatización<br>con <span>IA</span> y <span>n8n</span></h1>
+    <img src="./1t.png" alt="Gako AI" style="height:clamp(60px,9vw,120px); width:auto; margin-bottom:3vh;">
     <p class="cover-sub">De cero a tu primer flujo automatizado</p>
   </div>
 
@@ -797,6 +799,7 @@
     document.getElementById('counter').textContent = (cur + 1) + ' / ' + total;
     document.getElementById('headerInfo').innerHTML = '<span>' + num + '</span> / ' + total;
     document.getElementById('progressBar').style.width = ((cur + 1) / total * 100) + '%';
+    document.body.classList.toggle('on-cover', cur === 0);
   }
 
   document.getElementById('nextBtn').onclick = () => go(cur + 1);
