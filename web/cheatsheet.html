@@ -185,27 +185,30 @@
         margin-bottom: 10px;
       }
       .print-header .ph-title {
-        font-size: 18px;
+        font-size: 24px;
         font-weight: 800;
         color: var(--dark);
         letter-spacing: -.3px;
       }
       .print-header .ph-title span { color: var(--red); }
-      .print-header img { height: 28px; }
+      .print-header img { height: 44px; }
+      .page2 { break-before: page; }
     }
 
     /* ===== PRINT ===== */
     @media print {
-      @page { margin: 8mm; size: A4; }
+      @page { margin: 6mm 8mm; size: A4; }
       .page-header { display: none; }
-      body { font-size: 11px; line-height: 1.45; margin: 0; }
-      .content { padding: 0; gap: 0 24px; }
-      .section { margin-bottom: 16px; page-break-inside: avoid; }
-      pre { padding: 7px 10px; margin-bottom: 7px; page-break-inside: avoid; }
-      td, th { padding: 4px 8px; }
-      ul { margin-bottom: 5px; }
-      li { margin-bottom: 2px; }
-      p { margin-bottom: 5px; }
+      body { font-size: 10.5px; line-height: 1.4; margin: 0; }
+      .content { padding: 0; gap: 0 20px; }
+      .section { margin-bottom: 12px; page-break-inside: avoid; }
+      h2 { margin-bottom: 8px; padding-bottom: 3px; }
+      h3 { margin: 8px 0 4px; }
+      pre { padding: 6px 8px; margin-bottom: 6px; page-break-inside: avoid; }
+      td, th { padding: 3px 7px; }
+      ul { margin-bottom: 4px; }
+      li { margin-bottom: 1px; }
+      p { margin-bottom: 4px; }
     }
   </style>
 </head>
@@ -365,24 +368,24 @@ return [
 ];</code></pre>
     </div>
 
-    <div class="section">
-      <h2>Atajos de teclado</h2>
-      <table>
-        <tr><th>Atajo</th><th>Acción</th></tr>
-        <tr><td><code>Ctrl/Cmd + S</code></td><td>Guardar flujo</td></tr>
-        <tr><td><code>Ctrl/Cmd + Z</code></td><td>Deshacer</td></tr>
-        <tr><td><code>Ctrl/Cmd + A</code></td><td>Seleccionar todo</td></tr>
-        <tr><td><code>Ctrl/Cmd + C / V</code></td><td>Copiar / Pegar nodos</td></tr>
-        <tr><td><code>Delete</code></td><td>Eliminar nodo</td></tr>
-        <tr><td><code>Ctrl/Cmd + Enter</code></td><td>Ejecutar flujo</td></tr>
-        <tr><td><code>Scroll</code></td><td>Zoom in/out</td></tr>
-        <tr><td><code>Espacio + Drag</code></td><td>Mover el canvas</td></tr>
-      </table>
-    </div>
-
   </div>
 
   <!-- FULL WIDTH ROWS -->
+
+  <div class="section full page2">
+    <h2>Atajos de teclado</h2>
+    <table style="max-width:420px">
+      <tr><th>Atajo</th><th>Acción</th></tr>
+      <tr><td><code>Ctrl/Cmd + S</code></td><td>Guardar flujo</td></tr>
+      <tr><td><code>Ctrl/Cmd + Z</code></td><td>Deshacer</td></tr>
+      <tr><td><code>Ctrl/Cmd + A</code></td><td>Seleccionar todo</td></tr>
+      <tr><td><code>Ctrl/Cmd + C / V</code></td><td>Copiar / Pegar nodos</td></tr>
+      <tr><td><code>Delete</code></td><td>Eliminar nodo</td></tr>
+      <tr><td><code>Ctrl/Cmd + Enter</code></td><td>Ejecutar flujo</td></tr>
+      <tr><td><code>Scroll</code></td><td>Zoom in/out</td></tr>
+      <tr><td><code>Espacio + Drag</code></td><td>Mover el canvas</td></tr>
+    </table>
+  </div>
 
   <div class="section full">
     <h2>APIs públicas gratuitas para practicar</h2>
