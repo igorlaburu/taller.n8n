@@ -276,26 +276,29 @@
     }
 
     .flow-item a {
-      background: var(--light-bg);
-      color: var(--mid);
+      background: var(--red);
+      color: white;
       font-size: 13px;
       font-weight: 700;
       padding: 8px 16px;
       border-radius: 6px;
       text-decoration: none;
       white-space: nowrap;
-      transition: background .2s;
+      transition: opacity .2s;
       text-align: center;
     }
 
-    .flow-item a:hover { background: var(--border); }
+    .flow-item a:hover { opacity: .85; }
 
     .flow-item a.open-n8n {
-      background: var(--red);
-      color: white;
+      background: none;
+      color: #999;
+      font-weight: 400;
+      padding: 4px 0;
+      font-size: 12px;
     }
 
-    .flow-item a.open-n8n:hover { opacity: .85; background: var(--red); }
+    .flow-item a.open-n8n:hover { opacity: 1; color: var(--mid); }
 
     /* FLUJOS DEMO (gris) */
     .flow-item.demo .num {
