@@ -350,6 +350,10 @@
     }
     .modal-close:hover, .modal-fullscreen:hover { color: white; }
     .modal-header-btns { display: flex; align-items: center; gap: 16px; }
+    @media (max-width: 768px) {
+      .modal-box { inset: 0 !important; border-radius: 0 !important; }
+      .modal-fullscreen { display: none; }
+    }
     #modal-frame {
       flex: 1;
       min-height: 0;
@@ -699,6 +703,12 @@ function openModal(src, title, narrow, full) {
     .then(html => { frame.srcdoc = html.replace('<head>', '<head><base href="' + base + '">'); })
     .catch(() => { frame.srcdoc = '<div style="padding:40px;font-family:sans-serif">Error al cargar.</div>'; });
   modal.style.display = 'flex';
+  if (window.innerWidth <= 768) {
+    const fn = modal.requestFullscreen || modal.webkitRequestFullscreen || modal.mozRequestFullScreen;
+    if (fn) fn.call(modal).then(() => {
+      if (full) try { screen.orientation.lock('landscape').catch(()=>{}); } catch(e) {}
+    }).catch(()=>{});
+  }
 }
 function openQR() {
   const modal = document.getElementById('modal');
