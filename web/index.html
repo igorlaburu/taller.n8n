@@ -750,6 +750,8 @@ function closeModal() {
   modal.style.display = 'none';
   frame.removeAttribute('src');
   frame.removeAttribute('srcdoc');
+  if (document.fullscreenElement) document.exitFullscreen().catch(()=>{});
+  try { screen.orientation.unlock(); } catch(e) {}
 }
 document.getElementById('modal').addEventListener('click', function(e) { if (e.target === this) closeModal(); });
 document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
