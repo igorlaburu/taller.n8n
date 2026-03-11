@@ -5,19 +5,24 @@
       "parameters": {
         "httpMethod": "POST",
         "path": "agente-wiki",
-        "responseMode": "lastNode",
+        "responseMode": "responseNode",
         "options": {}
       },
       "id": "e5f6a7b8-0005-0001-0001-000000000001",
       "name": "Recibir Pregunta",
       "type": "n8n-nodes-base.webhook",
       "typeVersion": 2,
-      "position": [240, 300],
-      "webhookId": "agente-wiki-001"
+      "position": [
+        192,
+        128
+      ],
+      "webhookId": "agente-wiki-001",
+      "disabled": true
     },
     {
       "parameters": {
-        "text": "={{ $json.body.pregunta }}",
+        "promptType": "define",
+        "text": "={{ $json.body?.pregunta || $json.message?.text }}",
         "options": {
           "systemMessage": "Eres un asistente util e inteligente. Respondes siempre en espanol, de forma clara y concisa. Cuando necesitas informacion factual sobre personas, lugares, eventos o conceptos, usas la herramienta de Wikipedia para buscarla. No inventes datos — si no lo sabes, busca en Wikipedia o di que no tienes esa informacion.",
           "maxIterations": 5
@@ -27,54 +32,36 @@
       "name": "Agente IA",
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 1.7,
-      "position": [500, 300]
-    },
-    {
-      "parameters": {
-        "model": {
-          "__rl": true,
-          "value": "gpt-4o-mini",
-          "mode": "list",
-          "cachedResultName": "gpt-4o-mini"
-        },
-        "options": {
-          "temperature": 0.3,
-          "maxTokens": 1000
-        }
-      },
-      "id": "e5f6a7b8-0005-0001-0001-000000000003",
-      "name": "OpenAI Chat Model",
-      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
-      "typeVersion": 1.2,
-      "position": [400, 520],
-      "credentials": {
-        "openAiApi": {
-          "id": "REEMPLAZAR_CON_ID_CREDENCIAL",
-          "name": "OpenAI - Taller"
-        }
-      }
+      "position": [
+        512,
+        304
+      ]
     },
     {
       "parameters": {
         "sessionIdType": "customKey",
-        "sessionKey": "={{ $('Recibir Pregunta').item.json.body.sesion_id || 'default' }}",
+        "sessionKey": "={{ $json.body?.sesion_id || $json.message?.chat?.id?.toString() || 'default' }}",
         "contextWindowLength": 10
       },
       "id": "e5f6a7b8-0005-0001-0001-000000000004",
       "name": "Memoria de Conversacion",
       "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
       "typeVersion": 1.3,
-      "position": [560, 520]
+      "position": [
+        560,
+        528
+      ]
     },
     {
-      "parameters": {
-        "topK": 3
-      },
+      "parameters": {},
       "id": "e5f6a7b8-0005-0001-0001-000000000005",
       "name": "Wikipedia",
       "type": "@n8n/n8n-nodes-langchain.toolWikipedia",
       "typeVersion": 1,
-      "position": [720, 520]
+      "position": [
+        720,
+        528
+      ]
     },
     {
       "parameters": {
@@ -85,18 +72,6 @@
               "name": "respuesta",
               "value": "={{ $json.output }}",
               "type": "string"
-            },
-            {
-              "id": "r002",
-              "name": "sesion_id",
-              "value": "={{ $('Recibir Pregunta').item.json.body.sesion_id || 'default' }}",
-              "type": "string"
-            },
-            {
-              "id": "r003",
-              "name": "pregunta_original",
-              "value": "={{ $('Recibir Pregunta').item.json.body.pregunta }}",
-              "type": "string"
             }
           ]
         },
@@ -106,7 +81,10 @@
       "name": "Formatear Respuesta",
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
-      "position": [760, 300]
+      "position": [
+        816,
+        304
+      ]
     },
     {
       "parameters": {
@@ -120,36 +98,170 @@
       "name": "Responder",
       "type": "n8n-nodes-base.respondToWebhook",
       "typeVersion": 1.1,
-      "position": [980, 300]
+      "position": [
+        1088,
+        96
+      ],
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenRouter",
+      "typeVersion": 1,
+      "position": [
+        416,
+        528
+      ],
+      "id": "563ee587-fef6-49ac-bcfd-a3ff3d751147",
+      "name": "OpenRouter Chat Model",
+      "credentials": {
+        "openRouterApi": {
+          "id": "kVqAzWbBaqS3z3Cy",
+          "name": "OpenRouter account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "updates": [
+          "message"
+        ],
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        208,
+        432
+      ],
+      "id": "91144cec-e413-44cd-a0e9-f73701da68a6",
+      "name": "Telegram Trigger",
+      "webhookId": "8fb5367a-8fb9-4ff9-b536-7d405ac77b99",
+      "credentials": {
+        "telegramApi": {
+          "id": "tEDfPLXup4X7cL0c",
+          "name": "Telegram account"
+        }
+      },
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Telegram Trigger').item.json.message.chat.id }}",
+        "text": "={{ $('Formatear Respuesta').item.json.respuesta }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        1104,
+        400
+      ],
+      "id": "fb337f10-5eb6-4d90-8e40-a792fc524aaf",
+      "name": "Send a text message",
+      "webhookId": "15e54052-ae26-4ed0-9243-93bd15753acb",
+      "credentials": {
+        "telegramApi": {
+          "id": "tEDfPLXup4X7cL0c",
+          "name": "Telegram account"
+        }
+      },
+      "disabled": true
     }
   ],
   "connections": {
     "Recibir Pregunta": {
-      "main": [[{ "node": "Agente IA", "type": "main", "index": 0 }]]
+      "main": [
+        [
+          {
+            "node": "Agente IA",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     },
     "Agente IA": {
-      "main": [[{ "node": "Formatear Respuesta", "type": "main", "index": 0 }]]
-    },
-    "OpenAI Chat Model": {
-      "ai_languageModel": [[{ "node": "Agente IA", "type": "ai_languageModel", "index": 0 }]]
+      "main": [
+        [
+          {
+            "node": "Formatear Respuesta",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     },
     "Memoria de Conversacion": {
-      "ai_memory": [[{ "node": "Agente IA", "type": "ai_memory", "index": 0 }]]
+      "ai_memory": [
+        [
+          {
+            "node": "Agente IA",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
     },
     "Wikipedia": {
-      "ai_tool": [[{ "node": "Agente IA", "type": "ai_tool", "index": 0 }]]
+      "ai_tool": [
+        [
+          {
+            "node": "Agente IA",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
     },
     "Formatear Respuesta": {
-      "main": [[{ "node": "Responder", "type": "main", "index": 0 }]]
+      "main": [
+        [
+          {
+            "node": "Responder",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Send a text message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenRouter Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Agente IA",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Responder": {
+      "main": [
+        []
+      ]
+    },
+    "Telegram Trigger": {
+      "main": [
+        [
+          {
+            "node": "Agente IA",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
-  "active": false,
-  "settings": { "executionOrder": "v1" },
-  "versionId": "agente-wiki-v1",
+  "pinData": {},
   "meta": {
-    "templateId": "taller-n8n-agente",
-    "notes": "El AI Agent tiene 3 sub-nodos conectados por debajo: OpenAI Chat Model (ai_languageModel), Memoria de Conversacion (ai_memory) y Wikipedia (ai_tool). En el canvas de n8n estos aparecen como nodos debajo del Agent conectados con lineas punteadas."
-  },
-  "id": "taller-flujo-agente",
-  "tags": [{ "id": "tag-taller", "name": "taller" }]
+    "templateCredsSetupCompleted": true
+  }
 }
