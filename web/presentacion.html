@@ -445,6 +445,39 @@
       .nav-btn { width: 52px; height: 52px; font-size: 20px; }
     }
 
+    /* ===== PORTRAIT MOBILE: vertical flows ===== */
+    @media (max-width: 768px) and (orientation: portrait) {
+      /* Standalone .flow diagrams go vertical */
+      .flow {
+        flex-direction: column !important;
+        align-items: center;
+        gap: 0;
+      }
+      .flow .flow-node {
+        font-size: 15px !important;
+        padding: 10px 24px !important;
+        min-width: 180px;
+        text-align: center;
+      }
+      .flow .flow-arrow {
+        transform: rotate(90deg);
+        font-size: 22px !important;
+        padding: 2px 0 !important;
+      }
+      /* Patterns table: shrink to fit 5-col grid */
+      .patterns-table .flow-node {
+        font-size: 12px !important;
+        padding: 6px 8px !important;
+      }
+      .patterns-table .flow-arrow {
+        font-size: 14px !important;
+        padding: 0 4px !important;
+      }
+      .patterns-table .pattern-label {
+        font-size: 12px;
+      }
+    }
+
     /* ===== PRINT ===== */
     @media print {
       @page { size: A4 landscape; margin: 0; }
