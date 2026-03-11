@@ -54,11 +54,17 @@
 
     /* ===== DECK ===== */
     .deck { position: fixed; top: var(--header-h); left: 0; right: 0; bottom: 0; }
+    /* Portrait mobile: header-h = 0, hide site chrome */
     @media (max-width: 768px) {
       :root { --header-h: 0px; }
       .site-header { display: none !important; }
       .progress { display: none !important; }
-      .deck { top: 0; bottom: 0; height: 100dvh; }
+    }
+    /* Landscape mobile (width > 768px but height ≤ 500px): same fix */
+    @media (orientation: landscape) and (max-height: 500px) {
+      :root { --header-h: 0px; }
+      .site-header { display: none !important; }
+      .progress { display: none !important; }
     }
 
     .slide {
@@ -568,9 +574,10 @@
         <table>
           <thead><tr><th>Modelo</th><th>Empresa</th><th>Característica</th></tr></thead>
           <tbody>
-            <tr><td><strong>GPT-4o</strong></td><td>OpenAI</td><td>Multimodal, muy popular</td></tr>
-            <tr><td><strong>Claude 4</strong></td><td>Anthropic</td><td>Razonamiento y código</td></tr>
-            <tr><td><strong>Llama 3</strong></td><td>Meta</td><td>Open source, self-hosted</td></tr>
+            <tr><td><strong>o3 / GPT-4.5</strong></td><td>OpenAI</td><td>Razonamiento avanzado</td></tr>
+            <tr><td><strong>Claude Opus 4</strong></td><td>Anthropic</td><td>Contexto largo, código</td></tr>
+            <tr><td><strong>Gemini 2.0 Pro</strong></td><td>Google</td><td>Multimodal, 1M tokens</td></tr>
+            <tr><td><strong>Llama 4</strong></td><td>Meta</td><td>Open source, self-hosted</td></tr>
           </tbody>
         </table>
       </div>
