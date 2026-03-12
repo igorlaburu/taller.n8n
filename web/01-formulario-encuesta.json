@@ -4,7 +4,7 @@
     {
       "parameters": {
         "formTitle": "Encuesta del Taller de IA y n8n",
-        "formDescription": "Tarda menos de 2 minutos. Tus respuestas se usaran en vivo durante el taller.",
+        "formDescription": "Tarda menos de 2 minutos. Tus respuestas se usaran en vivo durante el taller.\n\nNota: este formulario es una demostración de una clase práctica. No introduzcas datos personales. La información introducida será eliminada en unas horas.",
         "formFields": {
           "values": [
             {
